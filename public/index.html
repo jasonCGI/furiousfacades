@@ -26,6 +26,7 @@
 
       html {
         scroll-behavior: smooth;
+        scroll-padding-top: 6rem;
       }
 
       body {
@@ -48,11 +49,28 @@
       }
 
       header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
         display: flex;
         align-items: center;
         justify-content: space-between;
         min-height: 5rem;
         border-bottom: 1px solid var(--line);
+        background: rgba(11, 11, 11, 0.88);
+        backdrop-filter: blur(1rem);
+      }
+
+      header::before {
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: -1;
+        height: 5rem;
+        background: rgba(11, 11, 11, 0.88);
+        border-bottom: 1px solid var(--line);
+        content: "";
       }
 
       .brand {
@@ -81,13 +99,48 @@
         color: var(--ember);
       }
 
+      .header-nav {
+        display: flex;
+        align-items: center;
+        gap: clamp(1rem, 3vw, 2.5rem);
+      }
+
+      a:focus-visible {
+        outline: 3px solid var(--paper);
+        outline-offset: 5px;
+      }
+
       .hero {
         display: grid;
-        grid-template-columns: minmax(0, 1.45fr) minmax(17rem, 0.55fr);
-        gap: clamp(2rem, 7vw, 7rem);
-        align-items: end;
+        grid-template-columns: minmax(18rem, 1.05fr) minmax(17rem, 0.95fr);
+        gap: clamp(2rem, 6vw, 6rem);
+        align-items: center;
         min-height: calc(100vh - 5rem);
         padding: clamp(4rem, 10vh, 8rem) 0;
+      }
+
+      .hero-mark {
+        position: relative;
+        margin: 0;
+      }
+
+      .hero-mark::after {
+        position: absolute;
+        inset: 14% 10%;
+        z-index: -1;
+        background: rgba(119, 42, 31, 0.35);
+        border-radius: 50%;
+        content: "";
+        filter: blur(4rem);
+      }
+
+      .hero-mark img {
+        display: block;
+        width: 100%;
+        height: auto;
+        mix-blend-mode: screen;
+        filter: contrast(1.06);
+        transform: translateY(var(--parallax-y, 0));
       }
 
       .eyebrow {
@@ -101,7 +154,7 @@
       }
 
       h1 {
-        max-width: 12ch;
+        max-width: 10ch;
         margin: 0;
         font-size: clamp(4rem, 11vw, 9.5rem);
         font-weight: 900;
@@ -119,6 +172,10 @@
 
       .hero-copy {
         padding-bottom: 0.5rem;
+      }
+
+      .hero-copy h1 {
+        margin-bottom: 2rem;
       }
 
       .hero-copy p {
@@ -185,6 +242,84 @@
 
       .work {
         padding: clamp(5rem, 10vw, 9rem) 0;
+      }
+
+      .project {
+        padding: clamp(5rem, 10vw, 9rem) 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .project-heading {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: clamp(2rem, 7vw, 7rem);
+        align-items: end;
+        margin-bottom: 3rem;
+      }
+
+      .project-heading h2 {
+        margin-bottom: 0;
+      }
+
+      .project-copy p {
+        margin: 0 0 1.75rem;
+        color: var(--muted);
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1rem;
+        line-height: 1.65;
+      }
+
+      .project-gallery {
+        display: grid;
+        grid-template-columns: 1.35fr 0.65fr;
+        grid-template-rows: repeat(2, minmax(12rem, 18rem));
+        gap: 1rem;
+      }
+
+      .project-image {
+        position: relative;
+        overflow: hidden;
+        margin: 0;
+        background: #171412;
+      }
+
+      .project-image:first-child {
+        grid-row: 1 / 3;
+      }
+
+      .project-image img {
+        width: 100%;
+        height: 100%;
+        display: block;
+        object-fit: cover;
+        transition: transform 500ms ease;
+      }
+
+      .project-image:hover img {
+        transform: scale(1.025);
+      }
+
+      .project-image:first-child img {
+        object-position: center;
+      }
+
+      .motion-ready .reveal {
+        opacity: 0;
+        transform: translateY(2.5rem);
+        transition: opacity 700ms ease, transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+      }
+
+      .motion-ready .reveal.is-visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .motion-ready .reveal-delay-1 {
+        transition-delay: 100ms;
+      }
+
+      .motion-ready .reveal-delay-2 {
+        transition-delay: 200ms;
       }
 
       h2 {
@@ -266,12 +401,18 @@
 
       @media (max-width: 48rem) {
         .hero,
-        .story {
+        .story,
+        .project-heading {
           grid-template-columns: 1fr;
         }
 
         .hero {
           min-height: auto;
+        }
+
+        .hero-mark {
+          width: min(32rem, 100%);
+          margin: 0 auto;
         }
 
         .hero-copy {
@@ -282,12 +423,35 @@
           grid-template-columns: 1fr;
         }
 
+        .project-gallery {
+          grid-template-columns: 1fr 1fr;
+          grid-template-rows: minmax(15rem, 55vw) minmax(10rem, 14rem);
+        }
+
+        .project-image:first-child {
+          grid-column: 1 / 3;
+          grid-row: auto;
+        }
+
         .work-card {
           min-height: 14rem;
         }
       }
 
       @media (max-width: 32rem) {
+        h1 {
+          max-width: 100%;
+          font-size: clamp(2.75rem, 10.5vw, 3.4rem);
+        }
+
+        h1 em {
+          overflow-wrap: anywhere;
+        }
+
+        .header-nav .header-link:first-child {
+          display: none;
+        }
+
         .stats {
           grid-template-columns: 1fr;
         }
@@ -301,27 +465,49 @@
           flex-direction: column;
         }
       }
+
+      @media (prefers-reduced-motion: reduce) {
+        html {
+          scroll-behavior: auto;
+        }
+
+        *,
+        *::before,
+        *::after {
+          animation-duration: 0.01ms !important;
+          animation-iteration-count: 1 !important;
+          transition-duration: 0.01ms !important;
+        }
+
+        .hero-mark img {
+          transform: none !important;
+        }
+      }
     </style>
   </head>
   <body>
     <header class="shell">
       <a class="brand" href="#top">Furious<span>Facades</span></a>
-      <a class="header-link" href="https://www.etsy.com/shop/FuriousFacades" target="_blank" rel="noopener noreferrer">Shop on Etsy ↗</a>
+      <nav class="header-nav" aria-label="External links">
+        <a class="header-link" href="#crypteds">Crypteds</a>
+        <a class="header-link" href="https://www.etsy.com/shop/FuriousFacades" target="_blank" rel="noopener noreferrer">Shop on Etsy ↗</a>
+      </nav>
     </header>
 
     <main id="top">
       <section class="hero shell" aria-labelledby="hero-title">
-        <div>
+        <figure class="hero-mark reveal" data-parallax>
+          <img src="/assets/furious-facades-logo.jpg" width="1600" height="1600" alt="Furious Facades logo featuring a Wendigo silhouetted against a full moon">
+        </figure>
+        <div class="hero-copy reveal reveal-delay-1">
           <p class="eyebrow">Designed and made in Jacksonville, Florida</p>
-          <h1 id="hero-title">Make an <em>entrance.</em></h1>
-        </div>
-        <div class="hero-copy">
+          <h1 id="hero-title">Wear the <em>nightmare.</em></h1>
           <p>Original 3D-designed masks, cosplay armor, creature props, and sculptural lighting built for costumes, sets, walls, and worlds of your own.</p>
           <a class="button" href="https://www.etsy.com/shop/FuriousFacades" target="_blank" rel="noopener noreferrer">Explore the Etsy shop</a>
         </div>
       </section>
 
-      <section class="stats" aria-label="Etsy shop statistics">
+      <section class="stats reveal" aria-label="Etsy shop statistics">
         <div class="stat">
           <strong>933</strong>
           <span>Etsy sales</span>
@@ -336,25 +522,49 @@
         </div>
       </section>
 
-      <section class="work shell" aria-labelledby="work-title">
+      <section class="project shell" id="crypteds" aria-labelledby="crypteds-title">
+        <div class="project-heading">
+          <div class="reveal">
+            <p class="eyebrow">Launching soon on Kickstarter</p>
+            <h2 id="crypteds-title">Meet the Crypteds.</h2>
+          </div>
+          <div class="project-copy reveal reveal-delay-1">
+            <p>Adorable little costumed bears sealed in their own crates. Each Series 1 Crypted is resin printed and hand painted by Furious Facades.</p>
+            <a class="button" href="https://www.kickstarter.com/projects/crypteds/crypteds-adorable-little-costumed-bears-in-a-crate-0?ref=profile_created&amp;category_id=396" target="_blank" rel="noopener noreferrer">Follow on Kickstarter</a>
+          </div>
+        </div>
+        <div class="project-gallery">
+          <figure class="project-image reveal">
+            <img src="/assets/crypteds-hero.jpg" width="1024" height="576" loading="lazy" alt="Crypteds project artwork with Cthulhu and Wendigo costumed bears">
+          </figure>
+          <figure class="project-image reveal reveal-delay-1">
+            <img src="/assets/crypteds-detail-1.jpg" width="700" height="394" loading="lazy" alt="Three hand-painted Crypteds costumed bears">
+          </figure>
+          <figure class="project-image reveal reveal-delay-2">
+            <img src="/assets/crypteds-detail-2.jpg" width="700" height="525" loading="lazy" alt="Wood-look Crypteds mystery crate with a red wax seal">
+          </figure>
+        </div>
+      </section>
+
+      <section class="work shell reveal" aria-labelledby="work-title">
         <p class="eyebrow">The work</p>
         <h2 id="work-title">Built beyond the ordinary.</h2>
         <div class="work-grid">
-          <article class="work-card">
+          <article class="work-card reveal">
             <span class="work-number">01</span>
             <div>
               <h3>Masks</h3>
               <p>Wendigo, wolf, dragon, ram, cat, and creature designs made to transform a costume.</p>
             </div>
           </article>
-          <article class="work-card">
+          <article class="work-card reveal reveal-delay-1">
             <span class="work-number">02</span>
             <div>
               <h3>Armor and props</h3>
               <p>Articulated jaws, horns, spine kits, shoulder pieces, and custom cosplay components.</p>
             </div>
           </article>
-          <article class="work-card">
+          <article class="work-card reveal reveal-delay-2">
             <span class="work-number">03</span>
             <div>
               <h3>Lighting</h3>
@@ -364,7 +574,7 @@
         </div>
       </section>
 
-      <section class="story shell" aria-labelledby="story-title">
+      <section class="story shell reveal" aria-labelledby="story-title">
         <div>
           <p class="eyebrow">Behind the work</p>
           <h2 id="story-title">From digital model to physical artifact.</h2>
@@ -377,5 +587,44 @@
       <span>Furious Facades © 2026</span>
       <span>Jacksonville, Florida</span>
     </footer>
+    <script>
+      document.documentElement.classList.add("motion-ready");
+
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const revealItems = document.querySelectorAll(".reveal");
+
+      if (reducedMotion.matches || !("IntersectionObserver" in window)) {
+        revealItems.forEach((item) => item.classList.add("is-visible"));
+      } else {
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) {
+              return;
+            }
+
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.14 });
+
+        revealItems.forEach((item) => revealObserver.observe(item));
+
+        const parallaxImage = document.querySelector("[data-parallax] img");
+        let ticking = false;
+
+        const updateParallax = () => {
+          const offset = Math.min(window.scrollY * 0.06, 34);
+          parallaxImage.style.setProperty("--parallax-y", `${offset}px`);
+          ticking = false;
+        };
+
+        window.addEventListener("scroll", () => {
+          if (!ticking) {
+            window.requestAnimationFrame(updateParallax);
+            ticking = true;
+          }
+        }, { passive: true });
+      }
+    </script>
   </body>
 </html>

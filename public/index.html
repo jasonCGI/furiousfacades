@@ -15,6 +15,7 @@
         --line: #2c2926;
         --ember: #f05a28;
         --ember-dark: #a92f13;
+        --blood: #8f2118;
         font-family: "Arial Narrow", "Roboto Condensed", Impact, sans-serif;
         background: var(--ink);
         color: var(--paper);
@@ -214,8 +215,17 @@
 
       h1 em {
         display: block;
+        background: linear-gradient(
+          to top,
+          var(--blood) 0,
+          var(--blood) var(--nightmare-fill, 0%),
+          transparent var(--nightmare-fill, 0%),
+          transparent 100%
+        );
+        background-clip: text;
         color: transparent;
         font-style: normal;
+        -webkit-background-clip: text;
         -webkit-text-stroke: 2px var(--paper);
       }
 
@@ -274,6 +284,11 @@
       .button--kickstarter:hover,
       .button--kickstarter:focus-visible {
         border-color: #05ce78;
+      }
+
+      .button--kickstarter:hover img,
+      .button--kickstarter:focus-visible img {
+        filter: none;
       }
 
       .stats {
@@ -590,6 +605,11 @@
           transform: none !important;
         }
 
+        h1 em {
+          background: none;
+          color: var(--blood);
+        }
+
         .smoke-layer {
           transform: none !important;
         }
@@ -756,7 +776,9 @@
         const updateParallax = () => {
           const scrollPosition = window.scrollY;
           const logoOffset = Math.min(scrollPosition * 0.06, 34);
+          const nightmareProgress = Math.min(100, (scrollPosition / (window.innerHeight * 0.65)) * 100);
           parallaxImage.style.setProperty("--parallax-y", `${logoOffset}px`);
+          document.documentElement.style.setProperty("--nightmare-fill", `${nightmareProgress}%`);
           document.documentElement.style.setProperty("--smoke-far", `${Math.max(-110, scrollPosition * -0.035)}px`);
           document.documentElement.style.setProperty("--smoke-near", `${Math.max(-240, scrollPosition * -0.08)}px`);
           ticking = false;
@@ -768,6 +790,8 @@
             ticking = true;
           }
         }, { passive: true });
+
+        updateParallax();
       }
     </script>
   </body>

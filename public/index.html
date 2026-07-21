@@ -399,6 +399,25 @@
         text-transform: uppercase;
       }
 
+      .footer-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem 2rem;
+      }
+
+      .footer-links a {
+        color: var(--paper);
+        font-weight: 700;
+        text-decoration-color: var(--ember);
+        text-decoration-thickness: 2px;
+        text-underline-offset: 0.35rem;
+      }
+
+      .footer-links a:hover,
+      .footer-links a:focus-visible {
+        color: var(--ember);
+      }
+
       @media (max-width: 48rem) {
         .hero,
         .story,
@@ -584,14 +603,27 @@
     </main>
 
     <footer class="shell">
-      <span>Furious Facades © 2026</span>
-      <span>Jacksonville, Florida</span>
+      <div>
+        <span>Furious Facades © 2026</span><br>
+        <span>Jacksonville, Florida</span>
+      </div>
+      <nav class="footer-links" aria-label="Contact and social links">
+        <a id="email-josh" href="#contact" aria-label="Email Josh Rudloff">Email Josh</a>
+        <a href="https://www.linkedin.com/in/josh-rudloff-00a5177/" target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+      </nav>
     </footer>
     <script>
       document.documentElement.classList.add("motion-ready");
 
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       const revealItems = document.querySelectorAll(".reveal");
+      const emailLink = document.querySelector("#email-josh");
+
+      emailLink.addEventListener("click", (event) => {
+        event.preventDefault();
+        const address = ["jrudloff", "gmail.com"].join("@");
+        window.location.href = `mailto:${address}`;
+      });
 
       if (reducedMotion.matches || !("IntersectionObserver" in window)) {
         revealItems.forEach((item) => item.classList.add("is-visible"));

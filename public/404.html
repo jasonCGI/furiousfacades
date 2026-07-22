@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+    <meta name="theme-color" content="#0b0b0b">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <title>Page Not Found | Furious Facades</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        font-family: "Arial Narrow", "Roboto Condensed", Impact, sans-serif;
+        background: #0b0b0b;
+        color: #f2eee7;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        display: grid;
+        min-width: 20rem;
+        min-height: 100vh;
+        margin: 0;
+        place-items: center;
+        background:
+          radial-gradient(circle at 50% 75%, rgba(143, 33, 24, 0.28), transparent 30rem),
+          #0b0b0b;
+      }
+
+      main {
+        width: min(34rem, calc(100% - 2rem));
+        padding: 3rem 0;
+        text-align: center;
+      }
+
+      img {
+        width: min(15rem, 65vw);
+        height: auto;
+      }
+
+      p {
+        margin: 1rem auto 2rem;
+        color: #aaa39a;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 1.05rem;
+        line-height: 1.6;
+      }
+
+      .error-code {
+        margin: 1.5rem 0 0.5rem;
+        color: #f05a28;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+      }
+
+      h1 {
+        margin: 0;
+        font-size: clamp(3rem, 12vw, 5.5rem);
+        line-height: 0.9;
+        text-transform: uppercase;
+      }
+
+      a {
+        display: inline-flex;
+        min-height: 3.5rem;
+        padding: 0.9rem 1.4rem;
+        align-items: center;
+        justify-content: center;
+        background: #f05a28;
+        border: 1px solid #f05a28;
+        color: #100b09;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.8rem;
+        font-weight: 800;
+        letter-spacing: 0.08em;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+
+      a:hover,
+      a:focus-visible {
+        background: transparent;
+        color: #f2eee7;
+      }
+
+      a:focus-visible {
+        outline: 3px solid #f2eee7;
+        outline-offset: 5px;
+      }
+    </style>
+  </head>
+  <body>
+    <main aria-labelledby="not-found-title">
+      <img src="/assets/furious-facades-logo.webp" width="1819" height="1981" alt="Furious Facades">
+      <p class="error-code">Error 404</p>
+      <h1 id="not-found-title">Lost in the dark.</h1>
+      <p>This page has vanished. Return to Furious Facades and keep exploring the nightmare.</p>
+      <a href="/">Return home</a>
+    </main>
+  </body>
+</html>

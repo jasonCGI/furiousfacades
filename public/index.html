@@ -5,7 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Furious Facades creates original 3D-designed masks, cosplay armor, creature props, and sculptural lighting in Jacksonville, Florida.">
     <meta name="theme-color" content="#0b0b0b">
-    <title>Furious Facades | Masks, Props, and Sculptural Lighting</title>
+    <meta name="robots" content="index, follow, max-image-preview:large">
+    <link rel="canonical" href="https://furiousfacades-production.up.railway.app/">
+    <link rel="icon" href="/favicon.ico" sizes="32x32">
+    <link rel="icon" href="/assets/favicon-32.png" type="image/png" sizes="32x32">
+    <link rel="apple-touch-icon" href="/assets/apple-touch-icon.png" sizes="180x180">
+    <link rel="manifest" href="/site.webmanifest">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Furious Facades">
+    <meta property="og:title" content="Furious Facades | Wear the Nightmare.">
+    <meta property="og:description" content="Original masks, cosplay armor, creature props, and sculptural lighting designed and made in Jacksonville, Florida.">
+    <meta property="og:url" content="https://furiousfacades-production.up.railway.app/">
+    <meta property="og:image" content="https://furiousfacades-production.up.railway.app/assets/furious-facades-social.jpg">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Furious Facades logo and Wear the Nightmare tagline on a dark smoky background">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Furious Facades | Wear the Nightmare.">
+    <meta name="twitter:description" content="Original masks, cosplay armor, creature props, and sculptural lighting designed and made in Jacksonville, Florida.">
+    <meta name="twitter:image" content="https://furiousfacades-production.up.railway.app/assets/furious-facades-social.jpg">
+    <title>Furious Facades | Original Masks, Props, and Sculptural Lighting</title>
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Organization",
+            "@id": "https://furiousfacades-production.up.railway.app/#organization",
+            "name": "Furious Facades",
+            "url": "https://furiousfacades-production.up.railway.app/",
+            "logo": "https://furiousfacades-production.up.railway.app/assets/icon-512.png",
+            "image": "https://furiousfacades-production.up.railway.app/assets/furious-facades-social.jpg",
+            "description": "Furious Facades creates original 3D-designed masks, cosplay armor, creature props, and sculptural lighting.",
+            "founder": {
+              "@type": "Person",
+              "name": "Josh Rudloff"
+            },
+            "foundingLocation": {
+              "@type": "Place",
+              "address": {
+                "@type": "PostalAddress",
+                "addressLocality": "Jacksonville",
+                "addressRegion": "FL",
+                "addressCountry": "US"
+              }
+            },
+            "sameAs": [
+              "https://www.etsy.com/shop/FuriousFacades",
+              "https://www.linkedin.com/in/josh-rudloff-00a5177/"
+            ]
+          },
+          {
+            "@type": "WebSite",
+            "@id": "https://furiousfacades-production.up.railway.app/#website",
+            "url": "https://furiousfacades-production.up.railway.app/",
+            "name": "Furious Facades",
+            "publisher": {
+              "@id": "https://furiousfacades-production.up.railway.app/#organization"
+            },
+            "inLanguage": "en-US"
+          }
+        ]
+      }
+    </script>
     <style>
       :root {
         color-scheme: dark;
@@ -23,6 +86,22 @@
 
       * {
         box-sizing: border-box;
+      }
+
+      .skip-link {
+        position: fixed;
+        top: 0.75rem;
+        left: 0.75rem;
+        z-index: 100;
+        padding: 0.75rem 1rem;
+        color: var(--ink);
+        background: var(--orange);
+        font-weight: 800;
+        transform: translateY(-180%);
+      }
+
+      .skip-link:focus {
+        transform: translateY(0);
       }
 
       html {
@@ -753,6 +832,7 @@
     </style>
   </head>
   <body>
+    <a class="skip-link" href="#top">Skip to main content</a>
     <svg width="0" height="0" aria-hidden="true" focusable="false">
       <filter id="blood-goo" x="-5%" y="-5%" width="110%" height="145%">
         <feGaussianBlur in="SourceGraphic" stdDeviation="1.25" result="blood-blur"/>
@@ -770,7 +850,7 @@
           <a class="header-link" href="#crypteds">Crypteds</a>
           <a class="header-link" href="https://www.etsy.com/shop/FuriousFacades" target="_blank" rel="noopener noreferrer">
             <span>Shop on</span>
-            <img src="/assets/etsy.svg" width="24" height="24" alt="Etsy">
+            <img src="/assets/etsy.svg" width="24" height="24" alt="Etsy" decoding="async">
           </a>
         </nav>
       </div>
@@ -779,7 +859,7 @@
     <main id="top">
       <section class="hero shell" aria-labelledby="hero-title">
         <figure class="hero-mark reveal" data-parallax>
-          <img src="/assets/furious-facades-logo.webp" width="1819" height="1981" alt="Furious Facades logo featuring a Wendigo silhouetted against a full moon">
+          <img src="/assets/furious-facades-logo.webp" width="1819" height="1981" alt="Furious Facades logo featuring a Wendigo silhouetted against a full moon" decoding="async" fetchpriority="high">
         </figure>
         <div class="hero-copy reveal reveal-delay-1">
           <p class="eyebrow">Designed and made in Jacksonville, Florida</p>
@@ -814,19 +894,19 @@
             <p>Adorable little costumed bears sealed in their own crates. Each Series 1 Crypted is resin printed and hand painted by Furious Facades.</p>
             <a class="button button--kickstarter" href="https://www.kickstarter.com/projects/crypteds/crypteds-adorable-little-costumed-bears-in-a-crate-0?ref=profile_created&amp;category_id=396" target="_blank" rel="noopener noreferrer">
               <span>Follow on Kickstarter</span>
-              <img src="/assets/kickstarter.svg" width="24" height="24" alt="">
+              <img src="/assets/kickstarter.svg" width="24" height="24" alt="" decoding="async">
             </a>
           </div>
         </div>
         <div class="project-gallery">
           <figure class="project-image reveal">
-            <img src="/assets/crypteds-hero.webp" width="968" height="520" loading="lazy" alt="Crypteds project artwork with Cthulhu and Wendigo costumed bears">
+            <img src="/assets/crypteds-hero.webp" width="968" height="520" loading="lazy" decoding="async" alt="Crypteds project artwork with Cthulhu and Wendigo costumed bears">
           </figure>
           <figure class="project-image reveal reveal-delay-1">
-            <img src="/assets/crypteds-detail-1.jpg" width="700" height="394" loading="lazy" alt="Three hand-painted Crypteds costumed bears">
+            <img src="/assets/crypteds-detail-1.webp" width="700" height="394" loading="lazy" decoding="async" alt="Three hand-painted Crypteds costumed bears">
           </figure>
           <figure class="project-image reveal reveal-delay-2">
-            <img src="/assets/crypteds-detail-2.jpg" width="700" height="525" loading="lazy" alt="Wood-look Crypteds mystery crate with a red wax seal">
+            <img src="/assets/crypteds-detail-2.webp" width="700" height="525" loading="lazy" decoding="async" alt="Wood-look Crypteds mystery crate with a red wax seal">
           </figure>
         </div>
       </section>
@@ -836,21 +916,21 @@
         <h2 id="work-title">Built beyond the ordinary.</h2>
         <div class="work-grid">
           <a class="work-card reveal" href="https://www.etsy.com/listing/831152519/wendigo-mask" target="_blank" rel="noopener noreferrer">
-            <img class="work-card-image" src="/assets/etsy-mask.webp" width="1000" height="1250" loading="lazy" alt="White Wendigo skull mask with antlers from Furious Facades">
+            <img class="work-card-image" src="/assets/etsy-mask.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="White Wendigo skull mask with antlers from Furious Facades">
             <div>
               <h3>Masks</h3>
               <p>Wendigo, wolf, dragon, ram, cat, and creature designs made to transform a costume.</p>
             </div>
           </a>
           <a class="work-card reveal reveal-delay-1" href="https://www.etsy.com/listing/1030599820/adjustable-spine-armor-costume-cosplay" target="_blank" rel="noopener noreferrer">
-            <img class="work-card-image" src="/assets/etsy-armor.webp" width="1000" height="1334" loading="lazy" alt="Adjustable spine armor worn over a dark cosplay costume">
+            <img class="work-card-image" src="/assets/etsy-armor.webp" width="1000" height="1334" loading="lazy" decoding="async" alt="Adjustable spine armor worn over a dark cosplay costume">
             <div>
               <h3>Armor and props</h3>
               <p>Articulated jaws, horns, spine kits, shoulder pieces, and custom cosplay components.</p>
             </div>
           </a>
           <a class="work-card reveal reveal-delay-2" href="https://www.etsy.com/listing/915775626/skull-sconce-flame-light" target="_blank" rel="noopener noreferrer">
-            <img class="work-card-image" src="/assets/etsy-lighting.webp" width="1000" height="750" loading="lazy" alt="Illuminated skull sconce by Furious Facades">
+            <img class="work-card-image" src="/assets/etsy-lighting.webp" width="1000" height="750" loading="lazy" decoding="async" alt="Illuminated skull sconce by Furious Facades">
             <div>
               <h3>Lighting</h3>
               <p>Skull lamps, sconces, and sculptural fixtures that give a room its own mythology.</p>

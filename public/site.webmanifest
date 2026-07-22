@@ -1,0 +1,23 @@
+{
+  "name": "Furious Facades",
+  "short_name": "Furious Facades",
+  "description": "Original masks, cosplay armor, creature props, and sculptural lighting.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b0b",
+  "theme_color": "#0b0b0b",
+  "icons": [
+    {
+      "src": "/assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

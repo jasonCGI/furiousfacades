@@ -12,9 +12,20 @@ const contentTypes = {
   ".jpg": "image/jpeg",
   ".jpeg": "image/jpeg",
   ".js": "text/javascript; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
   ".png": "image/png",
   ".svg": "image/svg+xml",
+  ".txt": "text/plain; charset=utf-8",
+  ".webmanifest": "application/manifest+json; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8",
   ".webp": "image/webp"
+};
+
+const securityHeaders = {
+  "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action 'self'; frame-ancestors 'none'",
+  "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
+  "Referrer-Policy": "strict-origin-when-cross-origin",
+  "X-Content-Type-Options": "nosniff"
 };
 
 function resolvePublicFile(urlPath) {
@@ -31,7 +42,10 @@ function resolvePublicFile(urlPath) {
 
 const server = http.createServer(async (request, response) => {
   if (request.url === "/health") {
-    response.writeHead(200, { "Content-Type": "application/json; charset=utf-8" });
+    response.writeHead(200, {
+      ...securityHeaders,
+      "Content-Type": "application/json; charset=utf-8"
+    });
     response.end(JSON.stringify({ status: "ok" }));
     return;
   }
@@ -39,7 +53,10 @@ const server = http.createServer(async (request, response) => {
   const filePath = resolvePublicFile(request.url || "/");
 
   if (!filePath) {
-    response.writeHead(400, { "Content-Type": "text/plain; charset=utf-8" });
+    response.writeHead(400, {
+      ...securityHeaders,
+      "Content-Type": "text/plain; charset=utf-8"
+    });
     response.end("Bad request");
     return;
   }
@@ -47,17 +64,40 @@ const server = http.createServer(async (request, response) => {
   try {
     const body = await readFile(filePath);
     const contentType = contentTypes[path.extname(filePath).toLowerCase()] || "application/octet-stream";
-    response.writeHead(200, { "Content-Type": contentType });
+    const cacheControl = filePath.includes(`${path.sep}assets${path.sep}`)
+      ? "public, max-age=86400, stale-while-revalidate=604800"
+      : "no-cache";
+    response.writeHead(200, {
+      ...securityHeaders,
+      "Cache-Control": cacheControl,
+      "Content-Type": contentType
+    });
     response.end(body);
   } catch (error) {
     if (error.code === "ENOENT") {
-      response.writeHead(404, { "Content-Type": "text/plain; charset=utf-8" });
-      response.end("Not found");
+      try {
+        const notFoundPage = await readFile(path.join(publicDirectory, "404.html"));
+        response.writeHead(404, {
+          ...securityHeaders,
+          "Cache-Control": "no-cache",
+          "Content-Type": "text/html; charset=utf-8"
+        });
+        response.end(notFoundPage);
+      } catch {
+        response.writeHead(404, {
+          ...securityHeaders,
+          "Content-Type": "text/plain; charset=utf-8"
+        });
+        response.end("Not found");
+      }
       return;
     }
 
     console.error(error);
-    response.writeHead(500, { "Content-Type": "text/plain; charset=utf-8" });
+    response.writeHead(500, {
+      ...securityHeaders,
+      "Content-Type": "text/plain; charset=utf-8"
+    });
     response.end("Internal server error");
   }
 });

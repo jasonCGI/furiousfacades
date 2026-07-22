@@ -223,6 +223,12 @@
         -webkit-text-stroke: 2px var(--paper);
       }
 
+      .hero-title-line {
+        display: block;
+        transform-origin: left center;
+        white-space: nowrap;
+      }
+
       .blood-drips {
         position: absolute;
         top: calc(100% - 0.02em);
@@ -680,12 +686,13 @@
 
       @media (max-width: 32rem) {
         h1 {
+          width: 100%;
           max-width: 100%;
-          font-size: clamp(2.8rem, 12.5vw, 4.2rem);
+          font-size: clamp(3.25rem, 16vw, 4rem);
         }
 
         h1 em {
-          overflow-wrap: anywhere;
+          white-space: nowrap;
         }
 
         .header-nav .header-link:first-child {
@@ -776,7 +783,7 @@
         </figure>
         <div class="hero-copy reveal reveal-delay-1">
           <p class="eyebrow">Designed and made in Jacksonville, Florida</p>
-          <h1 id="hero-title">Wear the <em data-text="nightmare.">nightmare.<span class="blood-drips" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><i class="blood-drop"></i></span></em></h1>
+          <h1 id="hero-title"><span class="hero-title-line">Wear the</span><em data-text="nightmare.">nightmare.<span class="blood-drips" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><i class="blood-drop"></i></span></em></h1>
           <p>Original 3D-designed masks, cosplay armor, creature props, and sculptural lighting built for costumes, sets, walls, and worlds of your own.</p>
           <a class="button" href="https://www.etsy.com/shop/FuriousFacades" target="_blank" rel="noopener noreferrer">Explore the Etsy shop</a>
         </div>
@@ -880,8 +887,67 @@
       document.documentElement.classList.add("motion-ready");
 
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+      const mobileHeadline = window.matchMedia("(max-width: 32rem)");
       const revealItems = document.querySelectorAll(".reveal");
       const emailLink = document.querySelector("#email-josh");
+      const heroTitle = document.querySelector("#hero-title");
+      const wearLine = heroTitle.querySelector(".hero-title-line");
+      const nightmareLine = heroTitle.querySelector("em");
+
+      const fitMobileHeadline = () => {
+        heroTitle.style.removeProperty("font-size");
+        wearLine.style.removeProperty("font-size");
+        wearLine.style.removeProperty("transform");
+        nightmareLine.style.removeProperty("font-size");
+
+        if (!mobileHeadline.matches) {
+          return;
+        }
+
+        heroTitle.style.fontSize = "100px";
+        const pageWidth = document.documentElement.clientWidth || window.innerWidth;
+        const availableWidth = Math.min(heroTitle.clientWidth, pageWidth - 32) - 2;
+        const fitLine = (line) => {
+          const lineRange = document.createRange();
+          lineRange.selectNodeContents(line.firstChild);
+          const measuredWidth = lineRange.getBoundingClientRect().width;
+          const fittedSize = Math.min(92, (availableWidth / measuredWidth) * 100);
+          line.style.fontSize = `${fittedSize.toFixed(2)}px`;
+        };
+
+        fitLine(wearLine);
+        fitLine(nightmareLine);
+        heroTitle.style.removeProperty("font-size");
+
+        [wearLine, nightmareLine].forEach((line) => {
+          const correctionRange = document.createRange();
+          correctionRange.selectNodeContents(line.firstChild);
+          const renderedWidth = correctionRange.getBoundingClientRect().width;
+          const renderedSize = Number.parseFloat(getComputedStyle(line).fontSize);
+          const correctedSize = Math.min(92, renderedSize * (availableWidth / renderedWidth));
+          line.style.fontSize = `${correctedSize.toFixed(2)}px`;
+        });
+
+        const fittedWearRange = document.createRange();
+        fittedWearRange.selectNodeContents(wearLine.firstChild);
+        const fittedWearWidth = fittedWearRange.getBoundingClientRect().width;
+        wearLine.style.transform = `scaleX(${(availableWidth / fittedWearWidth).toFixed(4)})`;
+      };
+
+      let resizeTicking = false;
+      window.addEventListener("resize", () => {
+        if (resizeTicking) {
+          return;
+        }
+
+        window.requestAnimationFrame(() => {
+          fitMobileHeadline();
+          resizeTicking = false;
+        });
+        resizeTicking = true;
+      }, { passive: true });
+
+      fitMobileHeadline();
 
       emailLink.addEventListener("click", (event) => {
         event.preventDefault();

@@ -86,6 +86,7 @@
 
       .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; padding-top: 0.15rem; }
       .button { min-height: 2.9rem; padding: 0.75rem 1rem; border: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--text); cursor: pointer; font-size: 0.78rem; font-weight: 850; letter-spacing: 0.08em; text-transform: uppercase; }
+      .button--small { min-height: 2.1rem; padding: 0.45rem 0.6rem; font-size: 0.65rem; text-decoration: none; }
       .button:hover { border-color: var(--paper); }
       .button--primary { border-color: var(--ember); background: var(--ember); color: #1d0d06; }
       .button--primary:hover { background: #ff7140; }
@@ -109,6 +110,14 @@
       .connected { color: var(--success); font-size: 0.72rem; font-weight: 800; }
       .queue-state { color: #f7c45b; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
       .queue-state--draft { color: var(--muted); }
+      .walkthrough { padding: 1.1rem; }
+      .walkthrough > p { margin-bottom: 1rem; color: var(--muted); font-size: 0.78rem; line-height: 1.5; }
+      .walkthrough-steps { display: grid; gap: 0.7rem; margin: 0; padding: 0; list-style: none; counter-reset: walkthrough; }
+      .walkthrough-steps li { display: grid; grid-template-columns: 1.8rem 1fr; gap: 0.7rem; align-items: start; counter-increment: walkthrough; font-size: 0.78rem; line-height: 1.45; }
+      .walkthrough-steps li::before { display: grid; width: 1.8rem; height: 1.8rem; place-items: center; border: 1px solid var(--line); color: var(--ember); content: counter(walkthrough); font-weight: 850; }
+      .setup-platforms { display: grid; gap: 0.55rem; margin-top: 1rem; }
+      .setup-platform { display: flex; align-items: center; gap: 0.6rem; padding: 0.65rem; border: 1px solid var(--line); background: #141413; color: var(--muted); font-size: 0.75rem; }
+      .setup-platform input { width: 1rem; height: 1rem; accent-color: var(--success); }
 
       .preview { overflow: hidden; }
       .preview-tabs { display: flex; gap: 0.35rem; padding: 0.75rem 0.75rem 0; overflow-x: auto; }
@@ -229,7 +238,7 @@
 
         <aside class="right-column" aria-label="Publishing overview">
           <section class="panel" aria-labelledby="accounts-title">
-            <div class="panel-heading"><h2 id="accounts-title">Account connections</h2><span class="status">2 ready</span></div>
+            <div class="panel-heading"><h2 id="accounts-title">Account connections</h2><a class="button button--small" href="#connection-walkthrough">Setup guide</a></div>
             <div class="account-list">
               <div class="account"><span class="icon icon--facebook"><img src="/studio/social-publisher/icons/facebook.svg" alt="Facebook"></span><span><strong>Furious Facades</strong><small>Facebook Page</small></span><span class="connected">Ready</span></div>
               <div class="account"><span class="icon icon--instagram"><img src="/studio/social-publisher/icons/instagram.svg" alt="Instagram"></span><span><strong>@furious_facades</strong><small>Instagram Business</small></span><span class="connected">Ready</span></div>
@@ -237,6 +246,28 @@
               <div class="account"><span class="icon icon--threads"><img src="/studio/social-publisher/icons/threads.svg" alt="Threads"></span><span><strong>Threads profile</strong><small>Connection planned</small></span><span class="queue-state queue-state--draft">Setup</span></div>
               <div class="account"><span class="icon icon--x"><img src="/studio/social-publisher/icons/x.svg" alt="X"></span><span><strong>X profile</strong><small>Connection planned</small></span><span class="queue-state queue-state--draft">Setup</span></div>
               <div class="account"><span class="icon icon--linkedin"><img src="/studio/social-publisher/icons/linkedin.svg" alt="LinkedIn"></span><span><strong>LinkedIn profile</strong><small>Connection planned</small></span><span class="queue-state queue-state--draft">Setup</span></div>
+            </div>
+          </section>
+
+          <section class="panel" id="connection-walkthrough" aria-labelledby="walkthrough-title">
+            <div class="panel-heading"><h2 id="walkthrough-title">Connection walkthrough</h2><span class="hint">One-time setup</span></div>
+            <div class="walkthrough">
+              <p>Nothing is posted during setup. Start with Facebook and Instagram, then add the other platforms only when Josh is ready.</p>
+              <ol class="walkthrough-steps">
+                <li>Confirm the exact profile or business page to connect, and make sure Josh is an owner or administrator.</li>
+                <li>Use the account's normal login in the production app to approve only the requested publishing permissions.</li>
+                <li>Return here and confirm the account name shown by the connection matches the intended destination.</li>
+                <li>Send one test post to a non-public or test destination before enabling real publishing.</li>
+              </ol>
+              <div class="setup-platforms" aria-label="Connection readiness checklist">
+                <label class="setup-platform"><input class="setup-check" data-setup="facebook" type="checkbox"> Facebook Page ownership confirmed</label>
+                <label class="setup-platform"><input class="setup-check" data-setup="instagram" type="checkbox"> Instagram Business account confirmed</label>
+                <label class="setup-platform"><input class="setup-check" data-setup="tiktok" type="checkbox"> TikTok account selected</label>
+                <label class="setup-platform"><input class="setup-check" data-setup="threads" type="checkbox"> Threads profile selected</label>
+                <label class="setup-platform"><input class="setup-check" data-setup="x" type="checkbox"> X profile selected</label>
+                <label class="setup-platform"><input class="setup-check" data-setup="linkedin" type="checkbox"> LinkedIn profile selected</label>
+              </div>
+              <p class="mockup-note" id="setup-status" role="status" aria-live="polite"></p>
             </div>
           </section>
 
@@ -301,6 +332,7 @@
     </main>
     <script>
       const draftStorageKey = "josh-social-publisher-draft-v1";
+      const setupStorageKey = "josh-social-publisher-setup-v1";
       const caption = document.querySelector("#caption");
       const counter = document.querySelector("#counter");
       const altText = document.querySelector("#alt-text");
@@ -318,6 +350,8 @@
       const reviewButton = document.querySelector("#review-post");
       const draftStatus = document.querySelector("#draft-status");
       const proofread = document.querySelector("#proofread");
+      const setupChecks = document.querySelectorAll(".setup-check");
+      const setupStatus = document.querySelector("#setup-status");
       const cropX = document.querySelector("#crop-x");
       const cropY = document.querySelector("#crop-y");
       const cropZoom = document.querySelector("#crop-zoom");
@@ -417,6 +451,14 @@
         draftStatus.textContent = message;
       };
 
+      const saveSetupProgress = () => {
+        const complete = [...setupChecks].filter((check) => check.checked).map((check) => check.dataset.setup);
+        localStorage.setItem(setupStorageKey, JSON.stringify(complete));
+        setupStatus.textContent = complete.length
+          ? `${complete.length} of ${setupChecks.length} connection checks saved in this browser.`
+          : "Choose the accounts Josh plans to connect first.";
+      };
+
       caption.addEventListener("input", updateCaption);
       destinationInputs.forEach((input) => input.addEventListener("change", syncDestinations));
       tabs.forEach((tab) => tab.addEventListener("click", () => showTab(tab)));
@@ -429,6 +471,7 @@
         applyCrop(platform);
         syncCropControlAvailability(platform);
       }));
+      setupChecks.forEach((check) => check.addEventListener("change", saveSetupProgress));
 
       previewImages.forEach((image) => image.addEventListener("load", () => {
         const platform = activePlatform();
@@ -495,6 +538,18 @@
         }
       } catch {
         localStorage.removeItem(draftStorageKey);
+      }
+
+      try {
+        const savedSetup = JSON.parse(localStorage.getItem(setupStorageKey) || "[]");
+        setupChecks.forEach((check) => {
+          check.checked = savedSetup.includes(check.dataset.setup);
+        });
+        if (savedSetup.length) {
+          setupStatus.textContent = `${savedSetup.length} of ${setupChecks.length} connection checks restored from this browser.`;
+        }
+      } catch {
+        localStorage.removeItem(setupStorageKey);
       }
 
       updateCaption();

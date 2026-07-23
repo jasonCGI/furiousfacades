@@ -117,6 +117,7 @@
       .tab:disabled { cursor: not-allowed; opacity: 0.42; }
       .crop-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; padding: 0.75rem 1.15rem 0; }
       .crop-control { display: grid; gap: 0.3rem; color: var(--muted); font-size: 0.68rem; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; }
+      .crop-control[data-disabled="true"] { opacity: 0.4; }
       .crop-control input { width: 100%; accent-color: var(--ember); }
       .crop-note { margin: 0.65rem 1.15rem 0; color: var(--muted); font-size: 0.7rem; line-height: 1.4; }
       .preview-card { padding: 1.15rem; }
@@ -320,6 +321,7 @@
       const cropX = document.querySelector("#crop-x");
       const cropY = document.querySelector("#crop-y");
       const cropZoom = document.querySelector("#crop-zoom");
+      const cropControls = [cropX, cropY, cropZoom];
       const cropState = Object.fromEntries([...tabs].map((tab) => [tab.id.replace("-tab", ""), { x: 50, y: 50, zoom: 100 }]));
       let objectUrl = null;
 
@@ -335,6 +337,28 @@
         }
         image.style.objectPosition = `${crop.x}% ${crop.y}%`;
         image.style.transform = `scale(${crop.zoom / 100})`;
+        image.style.transformOrigin = `${crop.x}% ${crop.y}%`;
+      };
+
+      const setCropControlEnabled = (control, enabled) => {
+        control.disabled = !enabled;
+        control.closest(".crop-control").dataset.disabled = String(!enabled);
+      };
+
+      const syncCropControlAvailability = (platform) => {
+        const preview = document.querySelector(`#${platform}-preview .preview-media`);
+        const image = preview?.querySelector(".preview-image");
+        const crop = cropState[platform];
+        if (!preview || !image?.naturalWidth || !crop) {
+          cropControls.forEach((control) => setCropControlEnabled(control, false));
+          return;
+        }
+        const sourceAspect = image.naturalWidth / image.naturalHeight;
+        const frameAspect = preview.clientWidth / preview.clientHeight;
+        const hasZoom = crop.zoom > 100;
+        setCropControlEnabled(cropX, hasZoom || sourceAspect > frameAspect + 0.01);
+        setCropControlEnabled(cropY, hasZoom || sourceAspect < frameAspect - 0.01);
+        setCropControlEnabled(cropZoom, true);
       };
 
       const syncCropControls = (platform) => {
@@ -345,6 +369,7 @@
         cropX.value = String(crop.x);
         cropY.value = String(crop.y);
         cropZoom.value = String(crop.zoom);
+        syncCropControlAvailability(platform);
       };
 
       const showTab = (tab) => {
@@ -395,13 +420,22 @@
       caption.addEventListener("input", updateCaption);
       destinationInputs.forEach((input) => input.addEventListener("change", syncDestinations));
       tabs.forEach((tab) => tab.addEventListener("click", () => showTab(tab)));
-      [cropX, cropY, cropZoom].forEach((control) => control.addEventListener("input", () => {
+      cropControls.forEach((control) => control.addEventListener("input", () => {
         const platform = activePlatform();
         if (!platform) {
           return;
         }
         cropState[platform] = { x: Number(cropX.value), y: Number(cropY.value), zoom: Number(cropZoom.value) };
         applyCrop(platform);
+        syncCropControlAvailability(platform);
+      }));
+
+      previewImages.forEach((image) => image.addEventListener("load", () => {
+        const platform = activePlatform();
+        if (platform) {
+          applyCrop(platform);
+          syncCropControlAvailability(platform);
+        }
       }));
 
       mediaInput.addEventListener("change", () => {

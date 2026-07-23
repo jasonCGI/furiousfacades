@@ -175,7 +175,7 @@ const server = http.createServer(async (request, response) => {
     ? `${privateMockupPath}/index.html`
     : isPrivateMockupLoginPath(request.url || "/")
       ? `${privateMockupPath}/login.html`
-    : request.url || "/";
+      : requestedUrl.pathname;
   const filePath = resolvePublicFile(normalizedPath);
 
   if (!filePath) {

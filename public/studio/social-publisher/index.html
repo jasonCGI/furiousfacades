@@ -282,9 +282,9 @@
               <button class="tab" id="linkedin-tab" type="button" role="tab" aria-selected="false" aria-controls="linkedin-preview">LinkedIn</button>
             </div>
             <div class="crop-controls" aria-label="Current platform crop controls">
-              <label class="crop-control" for="crop-x">Horizontal<input id="crop-x" type="range" min="0" max="100" value="50"></label>
-              <label class="crop-control" for="crop-y">Vertical<input id="crop-y" type="range" min="0" max="100" value="50"></label>
-              <label class="crop-control" for="crop-zoom">Zoom<input id="crop-zoom" type="range" min="100" max="160" value="100"></label>
+              <label class="crop-control" for="crop-x">Horizontal<input id="crop-x" type="range" min="0" max="100" step="25" value="50"></label>
+              <label class="crop-control" for="crop-y">Vertical<input id="crop-y" type="range" min="0" max="100" step="25" value="50"></label>
+              <label class="crop-control" for="crop-zoom">Zoom<input id="crop-zoom" type="range" min="100" max="150" step="25" value="100"></label>
             </div>
             <p class="crop-note">Adjust the framing for the active platform. Each platform keeps its own crop position and zoom.</p>
             <div class="preview-card" id="facebook-preview" role="tabpanel" aria-labelledby="facebook-tab">
@@ -428,6 +428,8 @@
         const activeTab = document.querySelector("[role=tab][aria-selected=true]");
         if (!activeTab || activeTab.disabled) {
           showTab([...tabs].find((tab) => !tab.disabled));
+        } else {
+          syncCropControls(activeTab.id.replace("-tab", ""));
         }
         reviewButton.textContent = `Review ${selected.length} destination${selected.length === 1 ? "" : "s"}`;
       };

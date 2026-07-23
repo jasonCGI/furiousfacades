@@ -1,9 +1,12 @@
 const http = require("node:http");
 const { readFile } = require("node:fs/promises");
 const path = require("node:path");
+const { timingSafeEqual } = require("node:crypto");
 
 const port = Number.parseInt(process.env.PORT || "3000", 10);
 const publicDirectory = path.join(__dirname, "public");
+const privateMockupPath = "/studio/social-publisher";
+const privateMockupPassword = process.env.SOCIAL_PUBLISHER_PASSWORD;
 
 const contentTypes = {
   ".css": "text/css; charset=utf-8",
@@ -40,6 +43,32 @@ function resolvePublicFile(urlPath) {
   return filePath;
 }
 
+function isPrivateMockupRequest(url) {
+  const urlPath = new URL(url, "http://localhost").pathname;
+  return urlPath === privateMockupPath || urlPath.startsWith(`${privateMockupPath}/`);
+}
+
+function hasPrivateMockupAccess(request) {
+  if (!privateMockupPassword) {
+    return false;
+  }
+
+  const authorization = request.headers.authorization;
+  if (!authorization?.startsWith("Basic ")) {
+    return false;
+  }
+
+  try {
+    const provided = Buffer.from(authorization.slice(6), "base64").toString("utf8");
+    const expected = `josh:${privateMockupPassword}`;
+    const providedBuffer = Buffer.from(provided);
+    const expectedBuffer = Buffer.from(expected);
+    return providedBuffer.length === expectedBuffer.length && timingSafeEqual(providedBuffer, expectedBuffer);
+  } catch {
+    return false;
+  }
+}
+
 const server = http.createServer(async (request, response) => {
   if (request.url === "/health") {
     response.writeHead(200, {
@@ -50,7 +79,34 @@ const server = http.createServer(async (request, response) => {
     return;
   }
 
-  const filePath = resolvePublicFile(request.url || "/");
+  if (isPrivateMockupRequest(request.url || "/")) {
+    if (!privateMockupPassword) {
+      response.writeHead(503, {
+        ...securityHeaders,
+        "Cache-Control": "no-store",
+        "Content-Type": "text/plain; charset=utf-8"
+      });
+      response.end("Private mockup access is not configured.");
+      return;
+    }
+
+    if (!hasPrivateMockupAccess(request)) {
+      response.writeHead(401, {
+        ...securityHeaders,
+        "Cache-Control": "no-store",
+        "Content-Type": "text/plain; charset=utf-8",
+        "WWW-Authenticate": 'Basic realm="Josh Social Publisher", charset="UTF-8"'
+      });
+      response.end("Authentication required.");
+      return;
+    }
+  }
+
+  const requestedUrl = new URL(request.url || "/", "http://localhost");
+  const normalizedPath = requestedUrl.pathname === privateMockupPath || requestedUrl.pathname === `${privateMockupPath}/`
+    ? `${privateMockupPath}/index.html`
+    : request.url || "/";
+  const filePath = resolvePublicFile(normalizedPath);
 
   if (!filePath) {
     response.writeHead(400, {
@@ -64,7 +120,9 @@ const server = http.createServer(async (request, response) => {
   try {
     const body = await readFile(filePath);
     const contentType = contentTypes[path.extname(filePath).toLowerCase()] || "application/octet-stream";
-    const cacheControl = filePath.includes(`${path.sep}assets${path.sep}`)
+    const cacheControl = isPrivateMockupRequest(request.url || "/")
+      ? "no-store"
+      : filePath.includes(`${path.sep}assets${path.sep}`)
       ? "public, max-age=86400, stale-while-revalidate=604800"
       : "no-cache";
     response.writeHead(200, {

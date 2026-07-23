@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex, nofollow, noarchive">
+    <meta name="theme-color" content="#101010">
+    <title>Josh Social Publisher | Private mockup</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --canvas: #101010;
+        --surface: #181817;
+        --surface-strong: #22211f;
+        --line: #393733;
+        --text: #f3efe8;
+        --muted: #aaa49b;
+        --ember: #f05a28;
+        --blood: #a72d22;
+        --success: #58cf91;
+        --focus: #f7c45b;
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      * { box-sizing: border-box; }
+      html { background: var(--canvas); }
+      body { min-width: 20rem; margin: 0; background: radial-gradient(circle at 90% 5%, rgba(240, 90, 40, 0.11), transparent 25rem), var(--canvas); color: var(--text); }
+      button, input, textarea { font: inherit; }
+      button, a, input, textarea { -webkit-tap-highlight-color: transparent; }
+      :focus-visible { outline: 3px solid var(--focus); outline-offset: 3px; }
+
+      .skip-link { position: fixed; top: 0.75rem; left: 0.75rem; z-index: 20; padding: 0.7rem 0.9rem; background: var(--focus); color: #17130a; font-weight: 800; transform: translateY(-200%); }
+      .skip-link:focus { transform: translateY(0); }
+      .shell { width: min(80rem, calc(100% - 2rem)); margin: 0 auto; }
+
+      header { border-bottom: 1px solid var(--line); background: rgba(16, 16, 16, 0.92); backdrop-filter: blur(1rem); }
+      .topbar { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; min-height: 4.8rem; }
+      .brand { display: grid; gap: 0.2rem; line-height: 1; }
+      .brand strong { font-size: 0.95rem; letter-spacing: 0.11em; text-transform: uppercase; }
+      .brand strong span { color: var(--ember); }
+      .brand small { color: var(--muted); font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase; }
+      .private-badge { display: inline-flex; align-items: center; gap: 0.45rem; color: var(--muted); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; }
+      .private-badge::before { width: 0.55rem; height: 0.55rem; border-radius: 50%; background: var(--success); box-shadow: 0 0 1rem rgba(88, 207, 145, 0.65); content: ""; }
+
+      main { padding: clamp(2rem, 5vw, 4rem) 0 4rem; }
+      .intro { display: flex; align-items: end; justify-content: space-between; gap: 2rem; margin-bottom: 2rem; }
+      .eyebrow { margin: 0 0 0.65rem; color: var(--ember); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; }
+      h1, h2, p { margin-top: 0; }
+      h1 { max-width: 16ch; margin-bottom: 0; font-size: clamp(2rem, 4vw, 3.5rem); line-height: 0.98; letter-spacing: -0.055em; }
+      .intro-copy { max-width: 34rem; margin: 0; color: var(--muted); line-height: 1.6; }
+
+      .layout { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(19rem, 0.8fr); gap: clamp(1rem, 3vw, 2rem); align-items: start; }
+      .panel { border: 1px solid var(--line); background: rgba(24, 24, 23, 0.9); }
+      .panel-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.25rem 1.25rem 1rem; border-bottom: 1px solid var(--line); }
+      .panel-heading h2 { margin: 0; font-size: 1rem; letter-spacing: -0.02em; }
+      .status { display: inline-flex; align-items: center; gap: 0.4rem; color: var(--success); font-size: 0.72rem; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; }
+      .status::before { width: 0.45rem; height: 0.45rem; border-radius: 50%; background: currentColor; content: ""; }
+
+      .composer { padding: 1.25rem; }
+      .field { display: grid; gap: 0.55rem; margin-bottom: 1.1rem; }
+      label, .field-label { font-size: 0.8rem; font-weight: 750; }
+      .hint { color: var(--muted); font-size: 0.78rem; line-height: 1.45; }
+      .destinations { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.75rem; }
+      .destination { display: flex; align-items: center; gap: 0.7rem; min-height: 4.3rem; padding: 0.85rem; border: 1px solid var(--line); background: #141413; cursor: pointer; }
+      .destination input { width: 1.05rem; height: 1.05rem; accent-color: var(--ember); }
+      .destination strong, .destination small { display: block; }
+      .destination strong { font-size: 0.85rem; }
+      .destination small { margin-top: 0.15rem; color: var(--muted); font-size: 0.72rem; }
+      textarea { width: 100%; min-height: 9rem; resize: vertical; padding: 0.85rem; border: 1px solid var(--line); border-radius: 0; background: #111110; color: var(--text); line-height: 1.5; }
+      textarea::placeholder { color: #77716a; }
+      .field-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+      .counter { color: var(--muted); font-size: 0.75rem; }
+
+      .upload { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0.9rem; align-items: center; padding: 0.85rem; border: 1px dashed #5a554e; background: #141413; }
+      .image-placeholder { display: grid; width: 4.5rem; aspect-ratio: 1; place-items: center; background: linear-gradient(135deg, #32312e, #1c1b19); color: var(--ember); font-size: 1.6rem; }
+      .upload strong, .upload span { display: block; }
+      .upload strong { font-size: 0.85rem; }
+      .upload span { margin-top: 0.25rem; color: var(--muted); font-size: 0.75rem; line-height: 1.35; }
+
+      .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; padding-top: 0.15rem; }
+      .button { min-height: 2.9rem; padding: 0.75rem 1rem; border: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--text); cursor: pointer; font-size: 0.78rem; font-weight: 850; letter-spacing: 0.08em; text-transform: uppercase; }
+      .button:hover { border-color: var(--paper); }
+      .button--primary { border-color: var(--ember); background: var(--ember); color: #1d0d06; }
+      .button--primary:hover { background: #ff7140; }
+
+      .right-column { display: grid; gap: 1rem; }
+      .account-list, .queue { display: grid; gap: 0; }
+      .account, .queue-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.75rem; padding: 0.95rem 1.1rem; border-bottom: 1px solid var(--line); }
+      .account:last-child, .queue-item:last-child { border-bottom: 0; }
+      .icon { display: grid; width: 2.2rem; height: 2.2rem; place-items: center; border-radius: 50%; font-size: 0.72rem; font-weight: 900; }
+      .icon--facebook { background: #1877f2; color: white; }
+      .icon--instagram { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); color: white; }
+      .account strong, .account small, .queue-item strong, .queue-item small { display: block; }
+      .account strong, .queue-item strong { font-size: 0.82rem; }
+      .account small, .queue-item small { margin-top: 0.2rem; color: var(--muted); font-size: 0.73rem; }
+      .connected { color: var(--success); font-size: 0.72rem; font-weight: 800; }
+      .queue-state { color: #f7c45b; font-size: 0.7rem; font-weight: 800; letter-spacing: 0.05em; text-transform: uppercase; }
+      .queue-state--draft { color: var(--muted); }
+
+      .preview { overflow: hidden; }
+      .preview-tabs { display: flex; gap: 0.35rem; padding: 0.75rem 0.75rem 0; }
+      .tab { min-height: 2.3rem; padding: 0.45rem 0.65rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 0.73rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
+      .tab[aria-selected="true"] { border-bottom-color: var(--ember); color: var(--text); }
+      .preview-card { padding: 1.15rem; }
+      .preview-profile { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.85rem; }
+      .preview-avatar { width: 2.1rem; height: 2.1rem; border-radius: 50%; background: linear-gradient(135deg, #5e2118, #131313); border: 1px solid #7f3a2c; }
+      .preview-profile strong, .preview-profile small { display: block; }
+      .preview-profile strong { font-size: 0.78rem; }
+      .preview-profile small { margin-top: 0.1rem; color: var(--muted); font-size: 0.68rem; }
+      .preview-media { display: grid; min-height: 10rem; place-items: center; border: 1px solid var(--line); background: radial-gradient(circle at 64% 35%, rgba(240, 90, 40, 0.38), transparent 15%), linear-gradient(135deg, #33231f, #111); color: #d5c6b9; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
+      .preview-caption { margin: 0.9rem 0 0; color: #ddd8d0; font-size: 0.82rem; line-height: 1.5; }
+      [hidden] { display: none !important; }
+
+      .mockup-note { margin: 1rem 0 0; color: var(--muted); font-size: 0.75rem; line-height: 1.5; }
+      .mockup-note strong { color: var(--paper); }
+
+      @media (max-width: 52rem) {
+        .intro, .layout { grid-template-columns: 1fr; }
+        .intro { display: grid; }
+        .intro-copy { max-width: 46rem; }
+      }
+
+      @media (max-width: 34rem) {
+        .topbar { min-height: 4.4rem; }
+        .private-badge { font-size: 0.65rem; }
+        .destinations { grid-template-columns: 1fr; }
+        .actions .button { flex: 1 1 100%; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after { scroll-behavior: auto !important; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+      }
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">Skip to mockup</a>
+    <header>
+      <div class="topbar shell">
+        <div class="brand"><strong>Josh <span>Social Publisher</span></strong><small>Furious Facades workspace</small></div>
+        <span class="private-badge">Private prototype</span>
+      </div>
+    </header>
+    <main id="main-content" class="shell">
+      <section class="intro" aria-labelledby="page-title">
+        <div>
+          <p class="eyebrow">Draft, review, schedule</p>
+          <h1 id="page-title">One post. Two places. One clear review.</h1>
+        </div>
+        <p class="intro-copy">A private working mockup for preparing Furious Facades posts for Facebook and Instagram. This prototype does not connect to Meta or publish content.</p>
+      </section>
+
+      <div class="layout">
+        <section class="panel" aria-labelledby="compose-title">
+          <div class="panel-heading"><h2 id="compose-title">New post</h2><span class="status">Draft ready</span></div>
+          <form class="composer" onsubmit="return false">
+            <div class="field">
+              <span class="field-label">Destinations</span>
+              <div class="destinations">
+                <label class="destination"><input type="checkbox" checked><span><strong>Facebook Page</strong><small>Furious Facades</small></span></label>
+                <label class="destination"><input type="checkbox" checked><span><strong>Instagram Business</strong><small>@furious_facades</small></span></label>
+              </div>
+            </div>
+            <div class="field">
+              <div class="field-row"><label for="caption">Master caption</label><span class="counter" id="counter">0 / 2,200</span></div>
+              <textarea id="caption" maxlength="2200" placeholder="Write the post that both audiences should see."></textarea>
+              <span class="hint">Platform-specific edits can be added after the shared caption is approved.</span>
+            </div>
+            <div class="field">
+              <span class="field-label">Media</span>
+              <div class="upload"><div class="image-placeholder" aria-hidden="true">+</div><div><strong>Drop in one image</strong><span>JPG or PNG. The final app will validate format, dimensions, and alt text before publishing.</span></div></div>
+            </div>
+            <div class="field">
+              <label for="alt-text">Image alternative text</label>
+              <input id="alt-text" type="text" placeholder="Describe what people should know from the image." style="min-height:2.8rem;padding:0.75rem;border:1px solid var(--line);background:#111110;color:var(--text);">
+            </div>
+            <div class="actions"><button class="button" type="button">Save draft</button><button class="button" type="button">Schedule</button><button class="button button--primary" type="button">Review 2 destinations</button></div>
+          </form>
+        </section>
+
+        <aside class="right-column" aria-label="Publishing overview">
+          <section class="panel" aria-labelledby="accounts-title">
+            <div class="panel-heading"><h2 id="accounts-title">Connected accounts</h2><span class="status">2 ready</span></div>
+            <div class="account-list">
+              <div class="account"><span class="icon icon--facebook" aria-hidden="true">f</span><span><strong>Furious Facades</strong><small>Facebook Page</small></span><span class="connected">Ready</span></div>
+              <div class="account"><span class="icon icon--instagram" aria-hidden="true">◎</span><span><strong>@furious_facades</strong><small>Instagram Business</small></span><span class="connected">Ready</span></div>
+            </div>
+          </section>
+
+          <section class="panel preview" aria-labelledby="preview-title">
+            <div class="panel-heading"><h2 id="preview-title">Post preview</h2><span class="hint">Mockup</span></div>
+            <div class="preview-tabs" role="tablist" aria-label="Preview platform">
+              <button class="tab" id="facebook-tab" type="button" role="tab" aria-selected="true" aria-controls="facebook-preview">Facebook</button>
+              <button class="tab" id="instagram-tab" type="button" role="tab" aria-selected="false" aria-controls="instagram-preview">Instagram</button>
+            </div>
+            <div class="preview-card" id="facebook-preview" role="tabpanel" aria-labelledby="facebook-tab">
+              <div class="preview-profile"><span class="preview-avatar" aria-hidden="true"></span><span><strong>Furious Facades</strong><small>Facebook Page</small></span></div>
+              <div class="preview-media">Your image preview</div>
+              <p class="preview-caption" id="facebook-caption">Your shared caption will appear here.</p>
+            </div>
+            <div class="preview-card" id="instagram-preview" role="tabpanel" aria-labelledby="instagram-tab" hidden>
+              <div class="preview-profile"><span class="preview-avatar" aria-hidden="true"></span><span><strong>furious_facades</strong><small>Instagram Business</small></span></div>
+              <div class="preview-media">Your image preview</div>
+              <p class="preview-caption" id="instagram-caption">Your shared caption will appear here.</p>
+            </div>
+          </section>
+
+          <section class="panel" aria-labelledby="queue-title">
+            <div class="panel-heading"><h2 id="queue-title">Coming up</h2><span class="hint">All times ET</span></div>
+            <div class="queue">
+              <div class="queue-item"><span class="icon icon--instagram" aria-hidden="true">◎</span><span><strong>Crypteds workshop photo</strong><small>Tomorrow, 10:00 AM</small></span><span class="queue-state">Scheduled</span></div>
+              <div class="queue-item"><span class="icon icon--facebook" aria-hidden="true">f</span><span><strong>Wendigo detail post</strong><small>Not scheduled</small></span><span class="queue-state queue-state--draft">Draft</span></div>
+            </div>
+          </section>
+        </aside>
+      </div>
+      <p class="mockup-note"><strong>Prototype boundary:</strong> this screen is for workflow and interface review only. It does not store captions, upload media, authenticate with Meta, or publish posts.</p>
+    </main>
+    <script>
+      const caption = document.querySelector("#caption");
+      const counter = document.querySelector("#counter");
+      const previews = document.querySelectorAll(".preview-caption");
+      const tabs = document.querySelectorAll("[role=tab]");
+
+      caption.addEventListener("input", () => {
+        counter.textContent = `${caption.value.length.toLocaleString()} / 2,200`;
+        previews.forEach((preview) => {
+          preview.textContent = caption.value.trim() || "Your shared caption will appear here.";
+        });
+      });
+
+      tabs.forEach((tab) => {
+        tab.addEventListener("click", () => {
+          tabs.forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+          document.querySelectorAll("[role=tabpanel]").forEach((panel) => {
+            panel.hidden = panel.getAttribute("aria-labelledby") !== tab.id;
+          });
+        });
+      });
+    </script>
+  </body>
+</html>

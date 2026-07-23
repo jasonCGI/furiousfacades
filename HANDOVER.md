@@ -20,6 +20,10 @@ The project intentionally has no third-party runtime dependencies.
 - `public/index.html`: the complete landing page, including HTML, CSS, and JavaScript
 - `public/404.html`: branded missing-page response
 - `public/assets/`: logos, social card, icons, Kickstarter art, and Etsy product images
+
+### Asset versioning
+
+All public assets are content-fingerprinted before deployment. After changing an image or icon, run `npm run assets:version`, then commit the renamed asset, updated references, and `public/assets/asset-manifest.json` together. This gives changed files a new URL, so external visitors receive the update without a forced refresh. Do not reuse an existing fingerprinted filename for different content.
 - `server.js`: zero-dependency Node static-file server
 - `package.json`: starts the site with `node server.js`
 - `railway.json`: Railway deployment configuration

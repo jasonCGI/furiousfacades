@@ -190,10 +190,13 @@ const server = http.createServer(async (request, response) => {
   try {
     const body = await readFile(filePath);
     const contentType = contentTypes[path.extname(filePath).toLowerCase()] || "application/octet-stream";
+    const isFingerprintedAsset = /\.[a-f0-9]{10}\.[^.]+$/i.test(path.basename(filePath));
     const cacheControl = isPrivateMockupRequest(request.url || "/")
       ? "no-store"
       : filePath.includes(`${path.sep}assets${path.sep}`)
-      ? "public, max-age=86400, stale-while-revalidate=604800"
+      ? isFingerprintedAsset
+        ? "public, max-age=31536000, immutable"
+        : "no-cache"
       : "no-cache";
     response.writeHead(200, {
       ...securityHeaders,

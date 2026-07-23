@@ -4,7 +4,8 @@
   "private": true,
   "description": "Temporary website for Furious Facades.",
   "scripts": {
-    "start": "node server.js"
+    "start": "node server.js",
+    "assets:version": "node scripts/fingerprint-assets.mjs"
   },
   "engines": {
     "node": ">=20"

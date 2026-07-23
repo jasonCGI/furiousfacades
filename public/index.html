@@ -828,6 +828,34 @@
       }
 
       @media (max-width: 48rem) {
+        header {
+          backdrop-filter: none;
+        }
+
+        .atmosphere {
+          inset: -10%;
+        }
+
+        .smoke-layer {
+          animation: none;
+          filter: blur(2.5rem);
+          transform: none;
+          will-change: auto;
+        }
+
+        .smoke-layer--far {
+          opacity: 0.2;
+        }
+
+        .smoke-layer--middle,
+        .smoke-layer--near {
+          display: none;
+        }
+
+        .work-card > div {
+          backdrop-filter: none;
+        }
+
         .header-nav .header-link:first-child {
           display: none;
         }
@@ -996,7 +1024,10 @@
     <main id="top">
       <section class="hero shell" aria-labelledby="hero-title">
         <figure class="hero-mark reveal" data-parallax>
-          <img class="hero-logo" src="/assets/furious-facades-logo.webp" width="1819" height="1981" alt="Furious Facades logo featuring a Wendigo silhouetted against a full moon" decoding="async" fetchpriority="high">
+          <picture>
+            <source media="(max-width: 48rem)" srcset="/assets/furious-facades-logo-mobile.webp">
+            <img class="hero-logo" src="/assets/furious-facades-logo.webp" width="1819" height="1981" alt="Furious Facades logo featuring a Wendigo silhouetted against a full moon" decoding="async" fetchpriority="high">
+          </picture>
         </figure>
         <div class="hero-copy reveal reveal-delay-1">
           <p class="eyebrow">Designed and made in Jacksonville, Florida</p>
@@ -1037,13 +1068,22 @@
         </div>
         <div class="project-gallery">
           <figure class="project-image reveal">
-            <img src="/assets/crypteds-hero.webp" width="968" height="520" loading="lazy" decoding="async" alt="Crypteds project artwork with Cthulhu and Wendigo costumed bears">
+            <picture>
+              <source media="(max-width: 48rem)" srcset="/assets/crypteds-hero-mobile.webp">
+              <img src="/assets/crypteds-hero.webp" width="968" height="520" loading="lazy" decoding="async" alt="Crypteds project artwork with Cthulhu and Wendigo costumed bears">
+            </picture>
           </figure>
           <figure class="project-image reveal reveal-delay-1">
-            <img src="/assets/crypteds-detail-1.webp" width="700" height="394" loading="lazy" decoding="async" alt="Three hand-painted Crypteds costumed bears">
+            <picture>
+              <source media="(max-width: 48rem)" srcset="/assets/crypteds-detail-1-mobile.webp">
+              <img src="/assets/crypteds-detail-1.webp" width="700" height="394" loading="lazy" decoding="async" alt="Three hand-painted Crypteds costumed bears">
+            </picture>
           </figure>
           <figure class="project-image reveal reveal-delay-2">
-            <img src="/assets/crypteds-detail-2.webp" width="700" height="525" loading="lazy" decoding="async" alt="Wood-look Crypteds mystery crate with a red wax seal">
+            <picture>
+              <source media="(max-width: 48rem)" srcset="/assets/crypteds-detail-2-mobile.webp">
+              <img src="/assets/crypteds-detail-2.webp" width="700" height="525" loading="lazy" decoding="async" alt="Wood-look Crypteds mystery crate with a red wax seal">
+            </picture>
           </figure>
         </div>
       </section>
@@ -1057,21 +1097,30 @@
         <h2 id="work-title">Built beyond the ordinary.</h2>
         <div class="work-grid">
           <a class="work-card reveal" href="https://www.etsy.com/listing/831152519/wendigo-mask" target="_blank" rel="noopener noreferrer">
-            <img class="work-card-image" src="/assets/etsy-mask.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="White Wendigo skull mask with antlers from Furious Facades">
+            <picture>
+              <source media="(max-width: 48rem)" srcset="/assets/etsy-mask-mobile.webp">
+              <img class="work-card-image" src="/assets/etsy-mask.webp" width="1000" height="1250" loading="lazy" decoding="async" alt="White Wendigo skull mask with antlers from Furious Facades">
+            </picture>
             <div>
               <h3>Masks</h3>
               <p>Wendigo, wolf, dragon, ram, cat, and creature designs made to transform a costume.</p>
             </div>
           </a>
           <a class="work-card reveal reveal-delay-1" href="https://www.etsy.com/listing/1030599820/adjustable-spine-armor-costume-cosplay" target="_blank" rel="noopener noreferrer">
-            <img class="work-card-image" src="/assets/etsy-armor.webp" width="1000" height="1334" loading="lazy" decoding="async" alt="Adjustable spine armor worn over a dark cosplay costume">
+            <picture>
+              <source media="(max-width: 48rem)" srcset="/assets/etsy-armor-mobile.webp">
+              <img class="work-card-image" src="/assets/etsy-armor.webp" width="1000" height="1334" loading="lazy" decoding="async" alt="Adjustable spine armor worn over a dark cosplay costume">
+            </picture>
             <div>
               <h3>Armor and props</h3>
               <p>Articulated jaws, horns, spine kits, shoulder pieces, and custom cosplay components.</p>
             </div>
           </a>
           <a class="work-card reveal reveal-delay-2" href="https://www.etsy.com/listing/915775626/skull-sconce-flame-light" target="_blank" rel="noopener noreferrer">
-            <img class="work-card-image" src="/assets/etsy-lighting.webp" width="1000" height="750" loading="lazy" decoding="async" alt="Illuminated skull sconce by Furious Facades">
+            <picture>
+              <source media="(max-width: 48rem)" srcset="/assets/etsy-lighting-mobile.webp">
+              <img class="work-card-image" src="/assets/etsy-lighting.webp" width="1000" height="750" loading="lazy" decoding="async" alt="Illuminated skull sconce by Furious Facades">
+            </picture>
             <div>
               <h3>Lighting</h3>
               <p>Skull lamps, sconces, and sculptural fixtures that give a room its own mythology.</p>
@@ -1109,6 +1158,7 @@
 
       const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
       const mobileHeadline = window.matchMedia("(max-width: 32rem)");
+      const compactVisuals = window.matchMedia("(max-width: 48rem)");
       const revealItems = document.querySelectorAll(".reveal");
       const emailLink = document.querySelector("#email-josh");
       const heroTitle = document.querySelector("#hero-title");
@@ -1217,12 +1267,14 @@
           document.documentElement.style.setProperty("--nightmare-detached-alpha", detachedDropAlpha.toFixed(3));
           document.documentElement.style.setProperty("--nightmare-detached-y", `${(-0.04 + (detachedDropProgress * 0.55)).toFixed(3)}em`);
           document.documentElement.style.setProperty("--nightmare-detached-scale", `${(0.8 + (detachedDropProgress * 0.2)).toFixed(3)}`);
-          document.documentElement.style.setProperty("--smoke-far", `${Math.max(-110, scrollPosition * -0.035)}px`);
-          document.documentElement.style.setProperty("--smoke-middle", `${Math.max(-165, scrollPosition * -0.055)}px`);
-          document.documentElement.style.setProperty("--smoke-near", `${Math.max(-240, scrollPosition * -0.08)}px`);
-          document.documentElement.style.setProperty("--smoke-far-alpha", `${(0.42 - (smokeProgress * 0.2)).toFixed(3)}`);
-          document.documentElement.style.setProperty("--smoke-middle-alpha", `${(0.18 - (smokeProgress * 0.08)).toFixed(3)}`);
-          document.documentElement.style.setProperty("--smoke-near-alpha", `${(0.34 - (smokeProgress * 0.22)).toFixed(3)}`);
+          if (!compactVisuals.matches) {
+            document.documentElement.style.setProperty("--smoke-far", `${Math.max(-110, scrollPosition * -0.035)}px`);
+            document.documentElement.style.setProperty("--smoke-middle", `${Math.max(-165, scrollPosition * -0.055)}px`);
+            document.documentElement.style.setProperty("--smoke-near", `${Math.max(-240, scrollPosition * -0.08)}px`);
+            document.documentElement.style.setProperty("--smoke-far-alpha", `${(0.42 - (smokeProgress * 0.2)).toFixed(3)}`);
+            document.documentElement.style.setProperty("--smoke-middle-alpha", `${(0.18 - (smokeProgress * 0.08)).toFixed(3)}`);
+            document.documentElement.style.setProperty("--smoke-near-alpha", `${(0.34 - (smokeProgress * 0.22)).toFixed(3)}`);
+          }
           ticking = false;
         };
 

@@ -4,6 +4,12 @@
 
 Build a private, responsive web application that lets Josh prepare, preview, schedule, and publish content to his Facebook and Instagram business presences from one interface.
 
+### Scope update: multi-platform delivery and deterministic review
+
+The composer and review model should also support TikTok, Threads, X, and LinkedIn. The interface should generate a distinct image derivative and a human review tab for every selected destination before any publish job is created. Publishing integrations can be delivered in phases, but the draft, crop preview, spellcheck, grammar confirmation, and review workflow should be platform-neutral from the start.
+
+Use `SOCIAL-PUBLISHER-CONTENT-RULES.md` as the version-controlled, non-agentic source for writing, proofread, accessibility, image, and human-review rules. The app should enforce mechanical checks locally and leave editorial judgment with Josh.
+
 The first release should optimize for one trusted operator and accounts Josh owns or manages. It should not begin as a public social-media management service.
 
 This plan is stored in the Furious Facades repository for collaboration. The application itself should eventually live in its own repository and Railway service so its authentication, secrets, database, and deployment lifecycle remain isolated from the public marketing website.

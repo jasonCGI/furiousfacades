@@ -71,11 +71,18 @@
       .field-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
       .counter { color: var(--muted); font-size: 0.75rem; }
 
-      .upload { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0.9rem; align-items: center; padding: 0.85rem; border: 1px dashed #5a554e; background: #141413; }
+      .upload { display: grid; grid-template-columns: 4.5rem 1fr; gap: 0.9rem; align-items: center; padding: 0.85rem; border: 1px dashed #5a554e; background: #141413; cursor: pointer; }
+      .upload:hover { border-color: var(--ember); }
       .image-placeholder { display: grid; width: 4.5rem; aspect-ratio: 1; place-items: center; background: linear-gradient(135deg, #32312e, #1c1b19); color: var(--ember); font-size: 1.6rem; }
+      .image-placeholder img { width: 100%; height: 100%; object-fit: cover; }
       .upload strong, .upload span { display: block; }
       .upload strong { font-size: 0.85rem; }
       .upload span { margin-top: 0.25rem; color: var(--muted); font-size: 0.75rem; line-height: 1.35; }
+      .format-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; }
+      .format-chip { padding: 0.65rem; border: 1px solid var(--line); background: #141413; }
+      .format-chip strong, .format-chip span { display: block; }
+      .format-chip strong { font-size: 0.73rem; }
+      .format-chip span { margin-top: 0.2rem; color: var(--muted); font-size: 0.67rem; line-height: 1.3; }
 
       .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; padding-top: 0.15rem; }
       .button { min-height: 2.9rem; padding: 0.75rem 1rem; border: 1px solid var(--line); border-radius: 0; background: transparent; color: var(--text); cursor: pointer; font-size: 0.78rem; font-weight: 850; letter-spacing: 0.08em; text-transform: uppercase; }
@@ -88,8 +95,14 @@
       .account, .queue-item { display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 0.75rem; padding: 0.95rem 1.1rem; border-bottom: 1px solid var(--line); }
       .account:last-child, .queue-item:last-child { border-bottom: 0; }
       .icon { display: grid; width: 2.2rem; height: 2.2rem; place-items: center; border-radius: 50%; font-size: 0.72rem; font-weight: 900; }
+      .icon img { width: 1.2rem; height: 1.2rem; object-fit: contain; }
       .icon--facebook { background: #1877f2; color: white; }
       .icon--instagram { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af); color: white; }
+      .icon--tiktok { background: linear-gradient(135deg, #00f2ea, #171717 45%, #ff0050); color: white; }
+      .icon--threads { background: #f3efe8; color: #111; }
+      .icon--x { background: #050505; color: white; border: 1px solid #5b5954; }
+      .icon--linkedin { background: #0a66c2; color: white; }
+      .account .icon { background: #0e0e0d; border: 1px solid #403d38; }
       .account strong, .account small, .queue-item strong, .queue-item small { display: block; }
       .account strong, .queue-item strong { font-size: 0.82rem; }
       .account small, .queue-item small { margin-top: 0.2rem; color: var(--muted); font-size: 0.73rem; }
@@ -98,16 +111,23 @@
       .queue-state--draft { color: var(--muted); }
 
       .preview { overflow: hidden; }
-      .preview-tabs { display: flex; gap: 0.35rem; padding: 0.75rem 0.75rem 0; }
+      .preview-tabs { display: flex; gap: 0.35rem; padding: 0.75rem 0.75rem 0; overflow-x: auto; }
       .tab { min-height: 2.3rem; padding: 0.45rem 0.65rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 0.73rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
       .tab[aria-selected="true"] { border-bottom-color: var(--ember); color: var(--text); }
+      .tab:disabled { cursor: not-allowed; opacity: 0.42; }
       .preview-card { padding: 1.15rem; }
       .preview-profile { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.85rem; }
       .preview-avatar { width: 2.1rem; height: 2.1rem; border-radius: 50%; background: linear-gradient(135deg, #5e2118, #131313); border: 1px solid #7f3a2c; }
       .preview-profile strong, .preview-profile small { display: block; }
       .preview-profile strong { font-size: 0.78rem; }
       .preview-profile small { margin-top: 0.1rem; color: var(--muted); font-size: 0.68rem; }
-      .preview-media { display: grid; min-height: 10rem; place-items: center; border: 1px solid var(--line); background: radial-gradient(circle at 64% 35%, rgba(240, 90, 40, 0.38), transparent 15%), linear-gradient(135deg, #33231f, #111); color: #d5c6b9; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
+      .preview-media { position: relative; display: grid; min-height: 10rem; max-height: 22rem; place-items: center; overflow: hidden; border: 1px solid var(--line); background: radial-gradient(circle at 64% 35%, rgba(240, 90, 40, 0.38), transparent 15%), linear-gradient(135deg, #33231f, #111); color: #d5c6b9; font-size: 0.75rem; letter-spacing: 0.06em; text-transform: uppercase; }
+      .preview-media--landscape { aspect-ratio: 1.91 / 1; }
+      .preview-media--wide { aspect-ratio: 16 / 9; }
+      .preview-media--square { aspect-ratio: 1; }
+      .preview-media--portrait { aspect-ratio: 4 / 5; }
+      .preview-media--vertical { aspect-ratio: 9 / 16; }
+      .preview-image { width: 100%; height: 100%; object-fit: cover; }
       .preview-caption { margin: 0.9rem 0 0; color: #ddd8d0; font-size: 0.82rem; line-height: 1.5; }
       [hidden] { display: none !important; }
 
@@ -124,6 +144,7 @@
         .topbar { min-height: 4.4rem; }
         .private-badge { font-size: 0.65rem; }
         .destinations { grid-template-columns: 1fr; }
+        .format-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
         .actions .button { flex: 1 1 100%; }
       }
 
@@ -144,9 +165,9 @@
       <section class="intro" aria-labelledby="page-title">
         <div>
           <p class="eyebrow">Draft, review, schedule</p>
-          <h1 id="page-title">One post. Two places. One clear review.</h1>
+          <h1 id="page-title">One post. Six platforms. One clear review.</h1>
         </div>
-        <p class="intro-copy">A private working mockup for preparing Furious Facades posts for Facebook and Instagram. This prototype does not connect to Meta or publish content.</p>
+        <p class="intro-copy">A private working prototype for preparing, formatting, reviewing, and scheduling Furious Facades posts. It stops immediately before external publishing.</p>
       </section>
 
       <div class="layout">
@@ -156,33 +177,61 @@
             <div class="field">
               <span class="field-label">Destinations</span>
               <div class="destinations">
-                <label class="destination"><input type="checkbox" checked><span><strong>Facebook Page</strong><small>Furious Facades</small></span></label>
-                <label class="destination"><input type="checkbox" checked><span><strong>Instagram Business</strong><small>@furious_facades</small></span></label>
+                <label class="destination"><input class="destination-input" data-platform="facebook" type="checkbox" checked><span><strong>Facebook Page</strong><small>Furious Facades</small></span></label>
+                <label class="destination"><input class="destination-input" data-platform="instagram" type="checkbox" checked><span><strong>Instagram Business</strong><small>@furious_facades</small></span></label>
+                <label class="destination"><input class="destination-input" data-platform="tiktok" type="checkbox"><span><strong>TikTok</strong><small>Connect for review</small></span></label>
+                <label class="destination"><input class="destination-input" data-platform="threads" type="checkbox"><span><strong>Threads</strong><small>Connect for review</small></span></label>
+                <label class="destination"><input class="destination-input" data-platform="x" type="checkbox"><span><strong>X</strong><small>Connect for review</small></span></label>
+                <label class="destination"><input class="destination-input" data-platform="linkedin" type="checkbox"><span><strong>LinkedIn</strong><small>Connect for review</small></span></label>
               </div>
             </div>
             <div class="field">
               <div class="field-row"><label for="caption">Master caption</label><span class="counter" id="counter">0 / 2,200</span></div>
-              <textarea id="caption" maxlength="2200" placeholder="Write the post that both audiences should see."></textarea>
+              <textarea id="caption" maxlength="2200" spellcheck="true" placeholder="Write the post that both audiences should see."></textarea>
               <span class="hint">Platform-specific edits can be added after the shared caption is approved.</span>
             </div>
             <div class="field">
               <span class="field-label">Media</span>
-              <div class="upload"><div class="image-placeholder" aria-hidden="true">+</div><div><strong>Drop in one image</strong><span>JPG or PNG. The final app will validate format, dimensions, and alt text before publishing.</span></div></div>
+              <input id="media-input" type="file" accept="image/jpeg,image/png,image/webp" hidden>
+              <label class="upload" for="media-input"><div class="image-placeholder" aria-hidden="true"><img id="upload-thumb" alt="" hidden><span id="upload-symbol">+</span></div><div><strong id="upload-title">Choose one image</strong><span id="upload-hint">JPG, PNG, or WebP. This prototype creates platform crop previews locally in your browser.</span></div></label>
+            </div>
+            <div class="field">
+              <span class="field-label">Auto-format delivery set</span>
+              <div class="format-grid" aria-label="Planned image formats">
+                <div class="format-chip"><strong>Facebook</strong><span>1.91:1 feed crop</span></div>
+                <div class="format-chip"><strong>Instagram</strong><span>4:5 feed crop</span></div>
+                <div class="format-chip"><strong>TikTok</strong><span>9:16 vertical crop</span></div>
+                <div class="format-chip"><strong>Threads</strong><span>1:1 square crop</span></div>
+                <div class="format-chip"><strong>X</strong><span>16:9 landscape crop</span></div>
+                <div class="format-chip"><strong>LinkedIn</strong><span>1.91:1 landscape crop</span></div>
+              </div>
+              <span class="hint">The production app will render these crops as separate optimized files before placing a post in the delivery queue.</span>
             </div>
             <div class="field">
               <label for="alt-text">Image alternative text</label>
-              <input id="alt-text" type="text" placeholder="Describe what people should know from the image." style="min-height:2.8rem;padding:0.75rem;border:1px solid var(--line);background:#111110;color:var(--text);">
+              <input id="alt-text" type="text" spellcheck="true" placeholder="Describe what people should know from the image." style="min-height:2.8rem;padding:0.75rem;border:1px solid var(--line);background:#111110;color:var(--text);">
             </div>
-            <div class="actions"><button class="button" type="button">Save draft</button><button class="button" type="button">Schedule</button><button class="button button--primary" type="button">Review 2 destinations</button></div>
+            <div class="field">
+              <label for="schedule-at">Schedule time</label>
+              <input id="schedule-at" type="datetime-local" style="min-height:2.8rem;padding:0.75rem;border:1px solid var(--line);background:#111110;color:var(--text);">
+              <span class="hint">Optional. The prototype remembers this only in this browser.</span>
+            </div>
+            <label class="hint" style="display:flex;align-items:center;gap:0.55rem;margin-bottom:1.1rem;"><input id="proofread" type="checkbox"> I reviewed the browser spellcheck and grammar before final review.</label>
+            <div class="actions"><button class="button" id="save-draft" type="button">Save draft</button><button class="button" id="schedule-draft" type="button">Schedule</button><button class="button button--primary" id="review-post" type="button">Review 2 destinations</button></div>
+            <p class="mockup-note" id="draft-status" role="status" aria-live="polite"></p>
           </form>
         </section>
 
         <aside class="right-column" aria-label="Publishing overview">
           <section class="panel" aria-labelledby="accounts-title">
-            <div class="panel-heading"><h2 id="accounts-title">Connected accounts</h2><span class="status">2 ready</span></div>
+            <div class="panel-heading"><h2 id="accounts-title">Account connections</h2><span class="status">2 ready</span></div>
             <div class="account-list">
-              <div class="account"><span class="icon icon--facebook" aria-hidden="true">f</span><span><strong>Furious Facades</strong><small>Facebook Page</small></span><span class="connected">Ready</span></div>
-              <div class="account"><span class="icon icon--instagram" aria-hidden="true">◎</span><span><strong>@furious_facades</strong><small>Instagram Business</small></span><span class="connected">Ready</span></div>
+              <div class="account"><span class="icon icon--facebook"><img src="/studio/social-publisher/icons/facebook.svg" alt="Facebook"></span><span><strong>Furious Facades</strong><small>Facebook Page</small></span><span class="connected">Ready</span></div>
+              <div class="account"><span class="icon icon--instagram"><img src="/studio/social-publisher/icons/instagram.svg" alt="Instagram"></span><span><strong>@furious_facades</strong><small>Instagram Business</small></span><span class="connected">Ready</span></div>
+              <div class="account"><span class="icon icon--tiktok"><img src="/studio/social-publisher/icons/tiktok.svg" alt="TikTok"></span><span><strong>TikTok account</strong><small>Connection planned</small></span><span class="queue-state queue-state--draft">Setup</span></div>
+              <div class="account"><span class="icon icon--threads"><img src="/studio/social-publisher/icons/threads.svg" alt="Threads"></span><span><strong>Threads profile</strong><small>Connection planned</small></span><span class="queue-state queue-state--draft">Setup</span></div>
+              <div class="account"><span class="icon icon--x"><img src="/studio/social-publisher/icons/x.svg" alt="X"></span><span><strong>X profile</strong><small>Connection planned</small></span><span class="queue-state queue-state--draft">Setup</span></div>
+              <div class="account"><span class="icon icon--linkedin"><img src="/studio/social-publisher/icons/linkedin.svg" alt="LinkedIn"></span><span><strong>LinkedIn profile</strong><small>Connection planned</small></span><span class="queue-state queue-state--draft">Setup</span></div>
             </div>
           </section>
 
@@ -191,16 +240,40 @@
             <div class="preview-tabs" role="tablist" aria-label="Preview platform">
               <button class="tab" id="facebook-tab" type="button" role="tab" aria-selected="true" aria-controls="facebook-preview">Facebook</button>
               <button class="tab" id="instagram-tab" type="button" role="tab" aria-selected="false" aria-controls="instagram-preview">Instagram</button>
+              <button class="tab" id="tiktok-tab" type="button" role="tab" aria-selected="false" aria-controls="tiktok-preview">TikTok</button>
+              <button class="tab" id="threads-tab" type="button" role="tab" aria-selected="false" aria-controls="threads-preview">Threads</button>
+              <button class="tab" id="x-tab" type="button" role="tab" aria-selected="false" aria-controls="x-preview">X</button>
+              <button class="tab" id="linkedin-tab" type="button" role="tab" aria-selected="false" aria-controls="linkedin-preview">LinkedIn</button>
             </div>
             <div class="preview-card" id="facebook-preview" role="tabpanel" aria-labelledby="facebook-tab">
               <div class="preview-profile"><span class="preview-avatar" aria-hidden="true"></span><span><strong>Furious Facades</strong><small>Facebook Page</small></span></div>
-              <div class="preview-media">Your image preview</div>
+              <div class="preview-media preview-media--landscape"><img class="preview-image" alt="" hidden><span>Your image preview · 1.91:1</span></div>
               <p class="preview-caption" id="facebook-caption">Your shared caption will appear here.</p>
             </div>
             <div class="preview-card" id="instagram-preview" role="tabpanel" aria-labelledby="instagram-tab" hidden>
               <div class="preview-profile"><span class="preview-avatar" aria-hidden="true"></span><span><strong>furious_facades</strong><small>Instagram Business</small></span></div>
-              <div class="preview-media">Your image preview</div>
+              <div class="preview-media preview-media--portrait"><img class="preview-image" alt="" hidden><span>Your image preview · 4:5</span></div>
               <p class="preview-caption" id="instagram-caption">Your shared caption will appear here.</p>
+            </div>
+            <div class="preview-card" id="tiktok-preview" role="tabpanel" aria-labelledby="tiktok-tab" hidden>
+              <div class="preview-profile"><span class="preview-avatar" aria-hidden="true"></span><span><strong>Furious Facades</strong><small>TikTok</small></span></div>
+              <div class="preview-media preview-media--vertical"><img class="preview-image" alt="" hidden><span>Your image preview · 9:16</span></div>
+              <p class="preview-caption">Your shared caption will appear here.</p>
+            </div>
+            <div class="preview-card" id="threads-preview" role="tabpanel" aria-labelledby="threads-tab" hidden>
+              <div class="preview-profile"><span class="preview-avatar" aria-hidden="true"></span><span><strong>furious_facades</strong><small>Threads</small></span></div>
+              <div class="preview-media preview-media--square"><img class="preview-image" alt="" hidden><span>Your image preview · 1:1</span></div>
+              <p class="preview-caption">Your shared caption will appear here.</p>
+            </div>
+            <div class="preview-card" id="x-preview" role="tabpanel" aria-labelledby="x-tab" hidden>
+              <div class="preview-profile"><span class="preview-avatar" aria-hidden="true"></span><span><strong>Furious Facades</strong><small>X</small></span></div>
+              <div class="preview-media preview-media--wide"><img class="preview-image" alt="" hidden><span>Your image preview · 16:9</span></div>
+              <p class="preview-caption">Your shared caption will appear here.</p>
+            </div>
+            <div class="preview-card" id="linkedin-preview" role="tabpanel" aria-labelledby="linkedin-tab" hidden>
+              <div class="preview-profile"><span class="preview-avatar" aria-hidden="true"></span><span><strong>Josh Rudloff</strong><small>LinkedIn</small></span></div>
+              <div class="preview-media preview-media--landscape"><img class="preview-image" alt="" hidden><span>Your image preview · 1.91:1</span></div>
+              <p class="preview-caption">Your shared caption will appear here.</p>
             </div>
           </section>
 
@@ -213,29 +286,133 @@
           </section>
         </aside>
       </div>
-      <p class="mockup-note"><strong>Prototype boundary:</strong> this screen is for workflow and interface review only. It does not store captions, upload media, authenticate with Meta, or publish posts.</p>
+      <p class="mockup-note"><strong>Prototype boundary:</strong> drafts are stored only in this browser for review. Image previews are local. The app does not authenticate with platforms or publish posts.</p>
     </main>
     <script>
+      const draftStorageKey = "josh-social-publisher-draft-v1";
       const caption = document.querySelector("#caption");
       const counter = document.querySelector("#counter");
+      const altText = document.querySelector("#alt-text");
+      const scheduleAt = document.querySelector("#schedule-at");
       const previews = document.querySelectorAll(".preview-caption");
       const tabs = document.querySelectorAll("[role=tab]");
+      const panels = document.querySelectorAll("[role=tabpanel]");
+      const destinationInputs = document.querySelectorAll(".destination-input");
+      const mediaInput = document.querySelector("#media-input");
+      const previewImages = document.querySelectorAll(".preview-image");
+      const uploadThumb = document.querySelector("#upload-thumb");
+      const uploadSymbol = document.querySelector("#upload-symbol");
+      const uploadTitle = document.querySelector("#upload-title");
+      const uploadHint = document.querySelector("#upload-hint");
+      const reviewButton = document.querySelector("#review-post");
+      const draftStatus = document.querySelector("#draft-status");
+      const proofread = document.querySelector("#proofread");
+      let objectUrl = null;
 
-      caption.addEventListener("input", () => {
+      const selectedPlatforms = () => [...destinationInputs].filter((input) => input.checked).map((input) => input.dataset.platform);
+
+      const showTab = (tab) => {
+        if (!tab || tab.disabled) {
+          return;
+        }
+        tabs.forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
+        panels.forEach((panel) => {
+          panel.hidden = panel.getAttribute("aria-labelledby") !== tab.id;
+        });
+      };
+
+      const syncDestinations = () => {
+        const selected = selectedPlatforms();
+        tabs.forEach((tab) => {
+          const platform = tab.id.replace("-tab", "");
+          const isSelected = selected.includes(platform);
+          tab.disabled = !isSelected;
+          tab.hidden = !isSelected;
+        });
+        const activeTab = document.querySelector("[role=tab][aria-selected=true]");
+        if (!activeTab || activeTab.disabled) {
+          showTab([...tabs].find((tab) => !tab.disabled));
+        }
+        reviewButton.textContent = `Review ${selected.length} destination${selected.length === 1 ? "" : "s"}`;
+      };
+
+      const updateCaption = () => {
         counter.textContent = `${caption.value.length.toLocaleString()} / 2,200`;
         previews.forEach((preview) => {
           preview.textContent = caption.value.trim() || "Your shared caption will appear here.";
         });
+      };
+
+      const saveDraft = (message) => {
+        localStorage.setItem(draftStorageKey, JSON.stringify({
+          caption: caption.value,
+          altText: altText.value,
+          scheduleAt: scheduleAt.value,
+          platforms: selectedPlatforms(),
+          mediaName: mediaInput.files[0]?.name || ""
+        }));
+        draftStatus.textContent = message;
+      };
+
+      caption.addEventListener("input", updateCaption);
+      destinationInputs.forEach((input) => input.addEventListener("change", syncDestinations));
+      tabs.forEach((tab) => tab.addEventListener("click", () => showTab(tab)));
+
+      mediaInput.addEventListener("change", () => {
+        const file = mediaInput.files[0];
+        if (!file) {
+          return;
+        }
+        if (objectUrl) {
+          URL.revokeObjectURL(objectUrl);
+        }
+        objectUrl = URL.createObjectURL(file);
+        previewImages.forEach((image) => {
+          image.src = objectUrl;
+          image.hidden = false;
+          image.nextElementSibling.hidden = true;
+        });
+        uploadThumb.src = objectUrl;
+        uploadThumb.hidden = false;
+        uploadSymbol.hidden = true;
+        uploadTitle.textContent = file.name;
+        uploadHint.textContent = "Crop previews are ready for review. The original file remains only in this browser.";
+        draftStatus.textContent = "Image loaded. Review each selected platform tab for its intended crop.";
       });
 
-      tabs.forEach((tab) => {
-        tab.addEventListener("click", () => {
-          tabs.forEach((item) => item.setAttribute("aria-selected", String(item === tab)));
-          document.querySelectorAll("[role=tabpanel]").forEach((panel) => {
-            panel.hidden = panel.getAttribute("aria-labelledby") !== tab.id;
-          });
-        });
+      document.querySelector("#save-draft").addEventListener("click", () => saveDraft("Draft saved in this browser."));
+      document.querySelector("#schedule-draft").addEventListener("click", () => {
+        saveDraft(scheduleAt.value ? "Draft schedule saved in this browser." : "Choose a schedule time before saving a schedule.");
       });
+      reviewButton.addEventListener("click", () => {
+        const selected = selectedPlatforms();
+        if (!selected.length) {
+          draftStatus.textContent = "Choose at least one destination before opening review.";
+          return;
+        }
+        draftStatus.textContent = proofread.checked
+          ? `Review ready: check the ${selected.length} selected platform tab${selected.length === 1 ? "" : "s"}, alt text, and crop before publishing is enabled.`
+          : "Review ready, but complete the spelling and grammar check before any publish step is enabled.";
+        showTab([...tabs].find((tab) => !tab.disabled));
+      });
+
+      try {
+        const savedDraft = JSON.parse(localStorage.getItem(draftStorageKey) || "null");
+        if (savedDraft) {
+          caption.value = savedDraft.caption || "";
+          altText.value = savedDraft.altText || "";
+          scheduleAt.value = savedDraft.scheduleAt || "";
+          destinationInputs.forEach((input) => {
+            input.checked = (savedDraft.platforms || []).includes(input.dataset.platform);
+          });
+          draftStatus.textContent = "Restored the last draft saved in this browser.";
+        }
+      } catch {
+        localStorage.removeItem(draftStorageKey);
+      }
+
+      updateCaption();
+      syncDestinations();
     </script>
   </body>
 </html>

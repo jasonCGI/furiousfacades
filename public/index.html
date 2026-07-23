@@ -265,11 +265,46 @@
         filter: blur(4rem);
       }
 
-      .hero-mark img {
+      .hero-logo,
+      .hero-logo-ember {
         display: block;
         width: 100%;
         height: auto;
         transform: translateY(var(--parallax-y, 0));
+      }
+
+      .hero-logo-ember {
+        position: absolute;
+        inset: 0;
+        pointer-events: none;
+        clip-path: inset(46% 0 22% 0);
+        mix-blend-mode: screen;
+        opacity: 0.72;
+        filter: saturate(1.6) brightness(1.14) drop-shadow(0 0 0.3rem rgba(238, 74, 30, 0.52)) drop-shadow(0 0 0.9rem rgba(173, 34, 15, 0.28));
+        animation: ember-flicker 6.2s ease-in-out infinite;
+        will-change: opacity, filter;
+      }
+
+      @keyframes ember-flicker {
+        0%,
+        100% {
+          opacity: 0.66;
+          filter: saturate(1.45) brightness(1.08) drop-shadow(0 0 0.18rem rgba(238, 74, 30, 0.38)) drop-shadow(0 0 0.65rem rgba(173, 34, 15, 0.2));
+        }
+
+        42% {
+          opacity: 0.86;
+          filter: saturate(1.85) brightness(1.24) drop-shadow(0 0 0.42rem rgba(245, 95, 36, 0.68)) drop-shadow(0 0 1.15rem rgba(173, 34, 15, 0.42));
+        }
+
+        56% {
+          opacity: 0.74;
+        }
+
+        73% {
+          opacity: 0.9;
+          filter: saturate(1.75) brightness(1.18) drop-shadow(0 0 0.34rem rgba(241, 81, 31, 0.6)) drop-shadow(0 0 1rem rgba(173, 34, 15, 0.35));
+        }
       }
 
       .eyebrow {
@@ -857,7 +892,8 @@
     <main id="top">
       <section class="hero shell" aria-labelledby="hero-title">
         <figure class="hero-mark reveal" data-parallax>
-          <img src="/assets/furious-facades-logo.webp" width="1819" height="1981" alt="Furious Facades logo featuring a Wendigo silhouetted against a full moon" decoding="async" fetchpriority="high">
+          <img class="hero-logo" src="/assets/furious-facades-logo.webp" width="1819" height="1981" alt="Furious Facades logo featuring a Wendigo silhouetted against a full moon" decoding="async" fetchpriority="high">
+          <img class="hero-logo-ember" src="/assets/furious-word-overlay.webp" width="1819" height="1981" alt="" aria-hidden="true" decoding="async">
         </figure>
         <div class="hero-copy reveal reveal-delay-1">
           <p class="eyebrow">Designed and made in Jacksonville, Florida</p>

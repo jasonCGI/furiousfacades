@@ -143,7 +143,9 @@
           radial-gradient(ellipse at 12% 24%, rgba(126, 144, 151, 0.18), transparent 34%),
           radial-gradient(ellipse at 82% 40%, rgba(113, 126, 132, 0.15), transparent 38%),
           radial-gradient(ellipse at 48% 88%, rgba(139, 119, 110, 0.12), transparent 32%);
+        filter: url(#smoke-warp-far) blur(3rem);
         transform: translate3d(0, var(--smoke-far, 0), 0) scale(1.05);
+        animation: smoke-far-drift 42s ease-in-out infinite alternate;
       }
 
       .smoke-layer--near {
@@ -151,9 +153,30 @@
           radial-gradient(ellipse at 32% 45%, rgba(185, 178, 165, 0.13), transparent 28%),
           radial-gradient(ellipse at 72% 72%, rgba(120, 131, 136, 0.18), transparent 30%),
           radial-gradient(ellipse at 5% 90%, rgba(126, 91, 80, 0.12), transparent 24%);
-        filter: blur(4.5rem);
+        filter: url(#smoke-warp-near) blur(4.5rem);
         opacity: var(--smoke-near-alpha, 0.34);
         transform: translate3d(0, var(--smoke-near, 0), 0) scale(1.16);
+        animation: smoke-near-drift 56s ease-in-out infinite alternate;
+      }
+
+      @keyframes smoke-far-drift {
+        from {
+          transform: translate3d(-1.5%, var(--smoke-far, 0), 0) scale(1.05);
+        }
+
+        to {
+          transform: translate3d(2%, var(--smoke-far, 0), 0) scale(1.09);
+        }
+      }
+
+      @keyframes smoke-near-drift {
+        from {
+          transform: translate3d(2%, var(--smoke-near, 0), 0) scale(1.16);
+        }
+
+        to {
+          transform: translate3d(-2%, var(--smoke-near, 0), 0) scale(1.22);
+        }
       }
 
       main,
@@ -847,6 +870,7 @@
         }
 
         .smoke-layer {
+          animation: none !important;
           transform: none !important;
         }
       }
@@ -858,6 +882,14 @@
       <filter id="blood-goo" x="-5%" y="-5%" width="110%" height="145%">
         <feGaussianBlur in="SourceGraphic" stdDeviation="1.25" result="blood-blur"/>
         <feColorMatrix in="blood-blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 16 -6"/>
+      </filter>
+      <filter id="smoke-warp-far" x="-15%" y="-15%" width="130%" height="130%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.006 0.016" numOctaves="2" seed="23" result="smoke-noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="smoke-noise" scale="24" xChannelSelector="R" yChannelSelector="G"/>
+      </filter>
+      <filter id="smoke-warp-near" x="-18%" y="-18%" width="136%" height="136%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.008 0.02" numOctaves="2" seed="47" result="smoke-noise"/>
+        <feDisplacementMap in="SourceGraphic" in2="smoke-noise" scale="34" xChannelSelector="R" yChannelSelector="G"/>
       </filter>
     </svg>
     <div class="atmosphere" aria-hidden="true">

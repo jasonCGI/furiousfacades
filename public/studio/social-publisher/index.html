@@ -115,6 +115,10 @@
       .tab { min-height: 2.3rem; padding: 0.45rem 0.65rem; border: 0; border-bottom: 2px solid transparent; background: transparent; color: var(--muted); cursor: pointer; font-size: 0.73rem; font-weight: 800; letter-spacing: 0.06em; text-transform: uppercase; }
       .tab[aria-selected="true"] { border-bottom-color: var(--ember); color: var(--text); }
       .tab:disabled { cursor: not-allowed; opacity: 0.42; }
+      .crop-controls { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0.55rem; padding: 0.75rem 1.15rem 0; }
+      .crop-control { display: grid; gap: 0.3rem; color: var(--muted); font-size: 0.68rem; font-weight: 750; letter-spacing: 0.06em; text-transform: uppercase; }
+      .crop-control input { width: 100%; accent-color: var(--ember); }
+      .crop-note { margin: 0.65rem 1.15rem 0; color: var(--muted); font-size: 0.7rem; line-height: 1.4; }
       .preview-card { padding: 1.15rem; }
       .preview-profile { display: flex; align-items: center; gap: 0.65rem; margin-bottom: 0.85rem; }
       .preview-avatar { width: 2.1rem; height: 2.1rem; border-radius: 50%; background: linear-gradient(135deg, #5e2118, #131313); border: 1px solid #7f3a2c; }
@@ -245,6 +249,12 @@
               <button class="tab" id="x-tab" type="button" role="tab" aria-selected="false" aria-controls="x-preview">X</button>
               <button class="tab" id="linkedin-tab" type="button" role="tab" aria-selected="false" aria-controls="linkedin-preview">LinkedIn</button>
             </div>
+            <div class="crop-controls" aria-label="Current platform crop controls">
+              <label class="crop-control" for="crop-x">Horizontal<input id="crop-x" type="range" min="0" max="100" value="50"></label>
+              <label class="crop-control" for="crop-y">Vertical<input id="crop-y" type="range" min="0" max="100" value="50"></label>
+              <label class="crop-control" for="crop-zoom">Zoom<input id="crop-zoom" type="range" min="100" max="160" value="100"></label>
+            </div>
+            <p class="crop-note">Adjust the framing for the active platform. Each platform keeps its own crop position and zoom.</p>
             <div class="preview-card" id="facebook-preview" role="tabpanel" aria-labelledby="facebook-tab">
               <div class="preview-profile"><span class="preview-avatar" aria-hidden="true"></span><span><strong>Furious Facades</strong><small>Facebook Page</small></span></div>
               <div class="preview-media preview-media--landscape"><img class="preview-image" alt="" hidden><span>Your image preview · 1.91:1</span></div>
@@ -307,9 +317,35 @@
       const reviewButton = document.querySelector("#review-post");
       const draftStatus = document.querySelector("#draft-status");
       const proofread = document.querySelector("#proofread");
+      const cropX = document.querySelector("#crop-x");
+      const cropY = document.querySelector("#crop-y");
+      const cropZoom = document.querySelector("#crop-zoom");
+      const cropState = Object.fromEntries([...tabs].map((tab) => [tab.id.replace("-tab", ""), { x: 50, y: 50, zoom: 100 }]));
       let objectUrl = null;
 
       const selectedPlatforms = () => [...destinationInputs].filter((input) => input.checked).map((input) => input.dataset.platform);
+
+      const activePlatform = () => document.querySelector("[role=tab][aria-selected=true]")?.id.replace("-tab", "");
+
+      const applyCrop = (platform) => {
+        const image = document.querySelector(`#${platform}-preview .preview-image`);
+        const crop = cropState[platform];
+        if (!image || !crop) {
+          return;
+        }
+        image.style.objectPosition = `${crop.x}% ${crop.y}%`;
+        image.style.transform = `scale(${crop.zoom / 100})`;
+      };
+
+      const syncCropControls = (platform) => {
+        const crop = cropState[platform];
+        if (!crop) {
+          return;
+        }
+        cropX.value = String(crop.x);
+        cropY.value = String(crop.y);
+        cropZoom.value = String(crop.zoom);
+      };
 
       const showTab = (tab) => {
         if (!tab || tab.disabled) {
@@ -319,6 +355,7 @@
         panels.forEach((panel) => {
           panel.hidden = panel.getAttribute("aria-labelledby") !== tab.id;
         });
+        syncCropControls(tab.id.replace("-tab", ""));
       };
 
       const syncDestinations = () => {
@@ -349,6 +386,7 @@
           altText: altText.value,
           scheduleAt: scheduleAt.value,
           platforms: selectedPlatforms(),
+          crops: cropState,
           mediaName: mediaInput.files[0]?.name || ""
         }));
         draftStatus.textContent = message;
@@ -357,6 +395,14 @@
       caption.addEventListener("input", updateCaption);
       destinationInputs.forEach((input) => input.addEventListener("change", syncDestinations));
       tabs.forEach((tab) => tab.addEventListener("click", () => showTab(tab)));
+      [cropX, cropY, cropZoom].forEach((control) => control.addEventListener("input", () => {
+        const platform = activePlatform();
+        if (!platform) {
+          return;
+        }
+        cropState[platform] = { x: Number(cropX.value), y: Number(cropY.value), zoom: Number(cropZoom.value) };
+        applyCrop(platform);
+      }));
 
       mediaInput.addEventListener("change", () => {
         const file = mediaInput.files[0];
@@ -372,6 +418,7 @@
           image.hidden = false;
           image.nextElementSibling.hidden = true;
         });
+        Object.keys(cropState).forEach(applyCrop);
         uploadThumb.src = objectUrl;
         uploadThumb.hidden = false;
         uploadSymbol.hidden = true;
@@ -404,6 +451,11 @@
           scheduleAt.value = savedDraft.scheduleAt || "";
           destinationInputs.forEach((input) => {
             input.checked = (savedDraft.platforms || []).includes(input.dataset.platform);
+          });
+          Object.entries(savedDraft.crops || {}).forEach(([platform, crop]) => {
+            if (cropState[platform]) {
+              cropState[platform] = { ...cropState[platform], ...crop };
+            }
           });
           draftStatus.textContent = "Restored the last draft saved in this browser.";
         }

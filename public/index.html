@@ -148,6 +148,16 @@
         animation: smoke-far-drift 42s ease-in-out infinite alternate;
       }
 
+      .smoke-layer--middle {
+        background:
+          radial-gradient(ellipse at 55% 22%, rgba(118, 132, 138, 0.11), transparent 31%),
+          radial-gradient(ellipse at 18% 68%, rgba(151, 142, 130, 0.1), transparent 34%);
+        filter: url(#smoke-warp-far) blur(3.8rem);
+        opacity: var(--smoke-middle-alpha, 0.18);
+        transform: translate3d(0, var(--smoke-middle, 0), 0) scale(1.1);
+        animation: smoke-middle-drift 49s ease-in-out infinite alternate;
+      }
+
       .smoke-layer--near {
         background:
           radial-gradient(ellipse at 32% 45%, rgba(185, 178, 165, 0.13), transparent 28%),
@@ -176,6 +186,16 @@
 
         to {
           transform: translate3d(-2%, var(--smoke-near, 0), 0) scale(1.22);
+        }
+      }
+
+      @keyframes smoke-middle-drift {
+        from {
+          transform: translate3d(1%, var(--smoke-middle, 0), 0) scale(1.1);
+        }
+
+        to {
+          transform: translate3d(-1%, var(--smoke-middle, 0), 0) scale(1.14);
         }
       }
 
@@ -526,7 +546,40 @@
       }
 
       .work {
+        position: relative;
+        isolation: isolate;
         padding: clamp(5rem, 10vw, 9rem) 0;
+      }
+
+      .work-omen {
+        position: absolute;
+        right: clamp(1rem, 7vw, 8rem);
+        top: 8rem;
+        z-index: -1;
+        display: flex;
+        gap: clamp(1.5rem, 4vw, 4rem);
+        opacity: 0;
+        pointer-events: none;
+        transform: translateY(0.6rem);
+      }
+
+      .work-eye {
+        width: clamp(0.35rem, 0.75vw, 0.6rem);
+        height: clamp(0.35rem, 0.75vw, 0.6rem);
+        border-radius: 50%;
+        background: #b9271e;
+        box-shadow: 0 0 0.5rem rgba(205, 42, 31, 0.72), 0 0 1.5rem rgba(169, 21, 14, 0.45);
+      }
+
+      .work.is-ominous .work-omen {
+        animation: omen-glow 3.8s ease-out forwards;
+      }
+
+      @keyframes omen-glow {
+        0% { opacity: 0; transform: translateY(0.6rem); }
+        20% { opacity: 0.76; }
+        62% { opacity: 0.42; }
+        100% { opacity: 0.18; transform: translateY(0); }
       }
 
       .project {
@@ -682,6 +735,27 @@
         font-size: 2rem;
         line-height: 1;
         text-transform: uppercase;
+      }
+
+      .work-card.is-visible h3 {
+        animation: ember-title 1.8s ease-out both;
+      }
+
+      @keyframes ember-title {
+        0% {
+          color: var(--paper);
+          text-shadow: none;
+        }
+
+        42% {
+          color: #f57143;
+          text-shadow: 0 0 0.6rem rgba(240, 90, 40, 0.75), 0 0 1.6rem rgba(143, 33, 24, 0.5);
+        }
+
+        100% {
+          color: var(--paper);
+          text-shadow: none;
+        }
       }
 
       .work-card p {
@@ -878,6 +952,10 @@
           animation: none !important;
           transform: none !important;
         }
+
+        .work-omen {
+          display: none;
+        }
       }
     </style>
   </head>
@@ -899,6 +977,7 @@
     </svg>
     <div class="atmosphere" aria-hidden="true">
       <span class="smoke-layer smoke-layer--far"></span>
+      <span class="smoke-layer smoke-layer--middle"></span>
       <span class="smoke-layer smoke-layer--near"></span>
     </div>
     <header>
@@ -970,6 +1049,10 @@
       </section>
 
       <section class="work shell reveal" id="work" aria-labelledby="work-title">
+        <div class="work-omen" aria-hidden="true">
+          <span class="work-eye"></span>
+          <span class="work-eye"></span>
+        </div>
         <p class="eyebrow">The work</p>
         <h2 id="work-title">Built beyond the ordinary.</h2>
         <div class="work-grid">
@@ -1103,6 +1186,9 @@
             }
 
             entry.target.classList.add("is-visible");
+            if (entry.target.matches(".work")) {
+              entry.target.classList.add("is-ominous");
+            }
             observer.unobserve(entry.target);
           });
         }, { threshold: 0.14 });
@@ -1132,8 +1218,10 @@
           document.documentElement.style.setProperty("--nightmare-detached-y", `${(-0.04 + (detachedDropProgress * 0.55)).toFixed(3)}em`);
           document.documentElement.style.setProperty("--nightmare-detached-scale", `${(0.8 + (detachedDropProgress * 0.2)).toFixed(3)}`);
           document.documentElement.style.setProperty("--smoke-far", `${Math.max(-110, scrollPosition * -0.035)}px`);
+          document.documentElement.style.setProperty("--smoke-middle", `${Math.max(-165, scrollPosition * -0.055)}px`);
           document.documentElement.style.setProperty("--smoke-near", `${Math.max(-240, scrollPosition * -0.08)}px`);
           document.documentElement.style.setProperty("--smoke-far-alpha", `${(0.42 - (smokeProgress * 0.2)).toFixed(3)}`);
+          document.documentElement.style.setProperty("--smoke-middle-alpha", `${(0.18 - (smokeProgress * 0.08)).toFixed(3)}`);
           document.documentElement.style.setProperty("--smoke-near-alpha", `${(0.34 - (smokeProgress * 0.22)).toFixed(3)}`);
           ticking = false;
         };

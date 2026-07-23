@@ -545,6 +545,25 @@
         text-transform: uppercase;
       }
 
+      .stat-proof {
+        display: block;
+        margin-top: 0.55rem;
+        color: #d8b48d;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.14em;
+        line-height: 1;
+        text-transform: uppercase;
+      }
+
+      .stat-proof--rating {
+        color: #e6b66c;
+        font-size: 0.8rem;
+        letter-spacing: 0.18em;
+        text-shadow: 0 0 0.7rem rgba(230, 182, 108, 0.35);
+      }
+
       .work {
         position: relative;
         isolation: isolate;
@@ -1039,16 +1058,18 @@
 
       <section class="stats reveal" aria-label="Etsy shop statistics">
         <div class="stat">
-          <strong>933</strong>
+          <strong class="sales-count" data-count="933" aria-label="933 Etsy sales">933</strong>
           <span>Etsy sales</span>
         </div>
         <div class="stat">
           <strong>5.0</strong>
           <span>Average rating</span>
+          <span class="stat-proof stat-proof--rating" aria-hidden="true">★★★★★</span>
         </div>
         <div class="stat">
           <strong>7</strong>
           <span>Years on Etsy</span>
+          <span class="stat-proof">Established 2019</span>
         </div>
       </section>
 
@@ -1164,6 +1185,32 @@
       const heroTitle = document.querySelector("#hero-title");
       const wearLine = heroTitle.querySelector(".hero-title-line");
       const nightmareLine = heroTitle.querySelector("em");
+      const salesCount = document.querySelector(".sales-count");
+      let salesCountAnimated = false;
+
+      const animateSalesCount = () => {
+        if (salesCountAnimated || !salesCount) {
+          return;
+        }
+
+        salesCountAnimated = true;
+        const target = Number(salesCount.dataset.count || 0);
+        const duration = 1300;
+        const startTime = performance.now();
+
+        const updateCount = (now) => {
+          const progress = Math.min(1, (now - startTime) / duration);
+          const eased = 1 - ((1 - progress) ** 3);
+          salesCount.textContent = Math.round(target * eased).toLocaleString("en-US");
+
+          if (progress < 1) {
+            window.requestAnimationFrame(updateCount);
+          }
+        };
+
+        salesCount.textContent = "0";
+        window.requestAnimationFrame(updateCount);
+      };
 
       const fitMobileHeadline = () => {
         heroTitle.style.removeProperty("font-size");
@@ -1238,6 +1285,9 @@
             entry.target.classList.add("is-visible");
             if (entry.target.matches(".work")) {
               entry.target.classList.add("is-ominous");
+            }
+            if (entry.target.matches(".stats")) {
+              animateSalesCount();
             }
             observer.unobserve(entry.target);
           });

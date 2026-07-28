@@ -200,6 +200,72 @@ Do not add a framework or dependency without a concrete benefit and maintainer a
 
 Railway deploys from GitHub after changes reach the configured production branch. Confirm the live deployment after merge and test the public URL rather than assuming the build completed.
 
+## Maintainer takeover for Josh
+
+The repository is currently owned by the GitHub account `jasonCGI`. Josh has
+accepted shared collaborator access to the GitHub repository and shared access
+to the Railway project. Repository ownership can move to Josh's account or a
+shared organization later if he becomes the permanent maintainer.
+
+### Recommended local setup
+
+1. Confirm Josh is signed into the GitHub account that received repository
+   access.
+2. Josh signs into GitHub Desktop on his computer and clones the repository.
+3. Josh opens that local clone in Claude Code.
+4. Claude works on focused `josh/` branches and opens pull requests until the
+   handoff workflow is proven reliable.
+
+GitHub Desktop is recommended for the initial setup because it manages Git
+authentication through the operating system credential manager. Josh and
+Claude should not need Jason's password, personal access token, browser
+session, or SSH private key.
+
+Claude must work from Josh's authenticated local clone to commit and push.
+A browser-only Claude conversation or isolated artifact environment cannot
+inherit Josh's GitHub credentials and should not be expected to push changes.
+That environment limitation is different from a fixable repository permission
+or credential configuration problem.
+
+### One-time identity and access check
+
+Run these commands from Josh's local clone:
+
+```powershell
+git config user.name "Josh Rudloff"
+git config user.email "JOSH_GITHUB_EMAIL"
+git remote -v
+git status
+git switch -c josh/access-test
+git push -u origin josh/access-test
+```
+
+Use the email address Josh has associated with GitHub. If the test push
+succeeds, the local clone, repository permission, and credential manager are
+ready for Claude-assisted work. Delete the test branch after verification.
+
+### Deployment access
+
+GitHub repository access and Railway project access are separate. Josh now has
+shared access to both. He can use his own Railway account to inspect
+deployments, logs, domains, variables, and rollback controls. Keep production
+deployment connected to the agreed production branch, currently `main`.
+
+Do not copy GitHub credentials, Railway credentials, OAuth tokens, deployment
+secrets, or social-platform passwords into chat, source files, browser storage,
+commits, screenshots, or handover documents.
+
+### Initial operating model
+
+- Josh or Claude pulls the latest `main` before starting.
+- Claude creates a focused branch such as `josh/logo-review` or
+  `josh/publisher`.
+- Claude commits and pushes only the scoped work.
+- Josh or Jason reviews and merges the pull request.
+- After merge, confirm the Railway deployment and test the production URL.
+- Avoid direct pushes to `main` until Josh has completed at least one successful
+  branch, review, merge, and deployment cycle.
+
 ## Known next steps
 
 Suggested work, in priority order:
